@@ -74,6 +74,10 @@ $k$, nous arrêtons.
 \end{algorithm}
 \subsection{Example}
 Comme example nous prenons le graphe complémentaire du \href{https://en.wikipedia.org/wiki/Frucht\_graph}{graphe de Frucht}
+Avec les sommets :
+\begin{displaymath}
+  V=\{1,2,3,...12\}
+\end{displaymath}
 \begin{center}
   \begin{figure}[!htp]
     \caption{Complément du graphe de Frucht}
@@ -81,6 +85,82 @@ Comme example nous prenons le graphe complémentaire du \href{https://en.wikiped
   \end{figure}
 \end{center}
 
+Nous allons faire tourner cet algorithme pour trouver une clique d'au moins $k=5$. \\
+Pour i=1 et i=2 nous trouvons des cliques de taille 4 donc nous passons à i=3.
+Initialisation : $Q_3=\{i\}=\{3\}$. \\
+Nous exécutons la fonction \textit{Expand\_Clique}
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    sommet $v$ joignable à $Q_3$ & sommets joignables à $Q_3\cup\{v\}$ & taille \\ \hline
+    \hline
+    1 	& 5, 6, 8, 9, 12  	& 5 \\ \hline
+    5   & 1, 7, 8, 11, 12   & 5 \\ \hline
+    6 	& 1, 9, 11, 12  	  & 4 \\ \hline
+    7 	& 5, 9, 11, 12  	  & 4 \\ \hline
+    8 	& 1, 5, 9, 11 	    & 4 \\ \hline
+    9 	& 1, 6, 7, 8, 11 	  & 5 \\ \hline
+    11 	& 5, 6, 7, 8, 9, 12 & 6 \\ \hline
+    12 	& 1, 5, 6, 7, 11  	& 5 \\ \hline
+  \end{tabular}
+\end{center}
+Nous trouvons que le maximum est :
+\begin{displaymath}
+  |Q_3 \cup \{v\}|_{max}=6 \quad pour \quad v=11
+\end{displaymath}
+Nous ajoutons le sommet $6$ à $Q$. Nous retrouvons la nouvelle clique \\
+$Q_3=\{3, 11\}$ de taille 2.
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    sommet $v$ joignable à $Q_3$ & sommets joignables à $Q_3\cup\{v\}$ & taille \\ \hline
+    \hline
+    5 	& 7, 8, 12 	& 3 \\ \hline
+    6 	& 9, 12 	  & 2 \\ \hline
+    7 	& 5, 9, 12 	& 3 \\ \hline
+    8 	& 5, 9 	    & 2 \\ \hline
+    9 	& 6, 7, 8 	& 3 \\ \hline
+    12 	& 5, 6, 7 	& 3 \\ \hline
+  \end{tabular}
+\end{center}
+Nous trouvons que le maximum est :
+\begin{displaymath}
+  |Q_3 \cup \{v\}|_{max}=3 \quad pour \quad v=5
+\end{displaymath}
+Nous ajoutons le sommet $5$ à $Q$. Nous retrouvons la nouvelle clique \\
+$Q_3=\{3, 5, 11\}$ de taille 3.
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    sommet $v$ joignable à $Q_3$ & sommets joignables à $Q_3\cup\{v\}$ & taille \\ \hline
+    \hline
+    7 	& 12 	            & 1 \\ \hline
+    8 	& $ \varnothing$ 	& 0 \\ \hline
+    12 	& 7 	            & 1 \\ \hline
+  \end{tabular}
+\end{center}
+Nous trouvons que le maximum est :
+\begin{displaymath}
+  |Q_3 \cup \{v\}|_{max}=1 \quad pour \quad v=7
+\end{displaymath}
+Nous ajoutons le sommet $12$ à $Q$. Nous retrouvons la nouvelle clique \\
+$Q_3=\{3, 5, 7, 11\}$ de taille 4.
+\begin{center}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    sommet $v$ joignable à $Q_3$ & sommets joignables à $Q_3\cup\{v\}$ & taille \\ \hline
+    \hline
+    12    & $\varnothing$ & 0 \\ \hline
+  \end{tabular}
+\end{center}
+Nous trouvons que le maximum est :
+\begin{displaymath}
+  |Q_3 \cup \{v\}|_{max}=0 \quad pour \quad v=12
+\end{displaymath}
+Nous ajoutons le sommet $12$ à $Q$. Nous retrouvons la nouvelle clique \\
+$Q_3=\{3, 5, 7, 11, 12\}$ de taille 5.\\
+Puisque la clique est de taille 5, nous nous arrêtons là.
+\textbf{FIX THE VERTICES NAMING}
 \section{Implémentation}
 Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
 maximum d'un graphe.
