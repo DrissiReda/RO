@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage[hidelinks]{hyperref}
+
+\title{Problème de clique maximum}
+
+\author{Drissi Mohamed Reda}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+Nous prenons un graphe $G=\{V,E\}$ tel que $V$ est l'ensemble des sommets
+et $E$ l'ensemble des arrêtes(Nous ignorons les arrêtes liant une arrête à elle même). \\
+Nous nommons les sommets du graphe 1,2, ... n. Cet algorithme permet de trouver une clique
+de taille d'au moins $k$. À chaque étape, si nous trouvons une clique de taille d'au moins
+$k$, nous arrêtons.
+\section{Algorithme et Test}
+\subsection{Algorithme}
+\begin{algorithm}
+\begin{algorithmic}
+  \Function{Expand\_clique}{Graph Q}
+  \While{$\exists$ v joignable à Q}
+    \State trouver $v_{max}$ tel que Le nombre de sommets joignable à la clique $Q \cup \{v_{max}\}$ est maximal
+    \State $Q \gets Q\cup \{v_{max}\}$
+  \EndWhile
+    \State \Return $Q$
+  \EndFunction
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}
+\begin{algorithmic}
+  \Function{Alter\_Clique}{Graph Q}
+  \State Trouver $v \notin Q$ tel que $\exists! w \in Q$ non adjacent à $v$.
+    \If{$v = \varnothing$}
+      \State \Return $Q$
+    \Else
+      \State $Q\gets Q \setminus \{w\}$
+      \State $Q \gets Q \cup \{v\}$
+      \State $Q \gets$ \Call{Expand\_clique}{Q}
+      \State \Return $Q$
+    \EndIf
+  \EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[!htp]
+\caption{Algorithme de clique de taille k}
+\begin{algorithmic}[1]
+  \For{i $\in$ [1,n]}
+    \State initialiser la clique $Q_i\gets \{i\}$
+    \State $Q_i \gets$ \Call{Expand\_Clique}{$Q_i$}
+    \For{i $\in$ [1,k]}
+      \State $Q_i \gets$ \Call{Alter\_Clique}{$Q_i$}
+    \EndFor
+  \EndFor
+  \ForAll{$Q_i$ et $Q_j$ trouvés}
+    \State initialiser la clique $Q_{i,j} \gets Q_i \cap Q_j$
+    \State $Q_{i,j} \gets$ \Call{Expand\_Clique}{$Q_{i,j}$}
+    \For{i $\in$ [1,k]}
+      \State $Q_i \gets$ \Call{Alter\_Clique}{$Q_i$}
+    \EndFor
+  \EndFor
+
+\end{algorithmic}
+\end{algorithm}
+\subsection{Example}
+Comme example nous prenons le graphe complémentaire du \href{https://en.wikipedia.org/wiki/Frucht\_graph}{graphe de Frucht}
+\begin{center}
+  \begin{figure}[!htp]
+    \caption{Complément du graphe de Frucht}
+    \includegraphics[scale=0.7]{frucht-compl.png}
+  \end{figure}
+\end{center}
+
+\section{Implémentation}
+Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
+maximum d'un graphe.
+
+\section{Performance}
+
+\end{document}
