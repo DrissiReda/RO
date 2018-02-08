@@ -3,7 +3,9 @@
 int main()
 {
 //Read Graph (note we work with the complement of the input graph)
-    std::cout<<"Clique Algorithm."<<std::endl;
+    std::cout<<"Choose graph"<<std::endl;
+    std::cin >> inp;
+    input.open((const char*)inp);
     input>>n;
     std::vector< std::vector<int> > graph;
     int K,k;
@@ -26,9 +28,9 @@ int main()
     std::cin>>K;
     k=n-K;
 //Find Cliques
-    find_cliques(graph,k);
+    find_cliques(graph, k, K);
 //Pairwise Intersections
-    pairwise_intersections(k);
+    pairwise_intersections(k, K);
     if(found) std::cout<<"Found Clique of size at least "<<K<<"."<<std::endl;
     else std::cout<<"Could not find Clique of size at least "<<K<<"."<<std::endl
                       <<"Maximum Clique size found "<<n-min<<"."<<std::endl;

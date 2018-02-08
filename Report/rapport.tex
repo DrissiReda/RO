@@ -165,6 +165,26 @@ Puisque la clique est de taille 5, nous nous arrêtons là.
 Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
 maximum d'un graphe.
 
-\section{Performance}
-
+\section{Test}
+Nous allons faire tourner notre code C++ sur plusieurs graphes, notre algorithme
+nous permet de choisir la taille de la clique souhaitée, cela rends le code plus partique
+pour s'assurer de trouver la clique maximale, nous allons choisir un nombre n=k
+Ce graphe :
+\begin{center}
+  \begin{verbatim}
+    0 0 0 1 0 0 1
+    0 0 0 0 1 0 1
+    0 0 0 0 0 1 1
+    1 0 0 0 1 1 0
+    0 1 0 1 0 1 0
+    0 0 1 1 1 0 0
+    1 1 1 0 0 0 0
+  \end{verbatim}
+\end{center}
+donne le résultat :
+\begin{center}
+  \begin{verbatim}
+  1. Clique of size 3 : 4 5 6
+  \end{verbatim}
+\end{center}
 \end{document}

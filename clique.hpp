@@ -2,9 +2,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
 ///////////////////////variables/////////////////////////////////
-std::ifstream input ("graph");
+char inp[255]={0};
+std::ifstream input;
 std::ofstream output ("cliques");
 int n, i, j, p, q, r, s, min, edge, counter=0;
 bool found=false;
@@ -18,8 +18,8 @@ std::vector<int> add_vertex(std::vector<std::vector<int> > neighbors, std::vecto
 std::vector<int> expand_vertex(std::vector<std::vector<int> > neighbors, std::vector<int> curr_clique, int k);
 int curr_clique_size(std::vector<int> curr_clique);
 std::vector<std::vector<int> > find_neighbors(std::vector<std::vector<int> > graph);
-void find_cliques(std::vector<std::vector<int> > graph, int k);
-void pairwise_intersections(int k);
+void find_cliques(std::vector<std::vector<int> > graph, int k, int K);
+void pairwise_intersections(int k, int K);
 ////////////////////functions///////////////////////////
 bool adjoinable(std::vector<int> neighbor, std::vector<int> curr_clique)
 {
@@ -116,7 +116,7 @@ std::vector<std::vector<int> > find_neighbors(std::vector<std::vector<int> > gra
     }
     return ret;
 }
-void find_cliques(std::vector<std::vector<int> > graph, int k)
+void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
 {
   std::cout<<"Finding Cliques..."<<std::endl;
   min=n+1;
@@ -126,8 +126,8 @@ void find_cliques(std::vector<std::vector<int> > graph, int k)
   {
       if(found) break;
       counter++;
-      std::cout<<counter<<". ";
-      output<<counter<<". ";
+      //std::cout<<counter<<". ";
+      //output<<counter<<". ";
       std::vector<int> curr_clique=allcurr_clique;
       curr_clique[i]=0;
       curr_clique=add_vertex(neighbors,curr_clique);
@@ -135,10 +135,14 @@ void find_cliques(std::vector<std::vector<int> > graph, int k)
       if(s<min) min=s;
       if(s<=k)
       {
-          output<<"Clique of size "<<n-s<<" : ";
-          for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-          output<<std::endl;
-          std::cout<<"Clique Size: "<<n-s<<std::endl;
+          //TODO remove condition
+          if(n-s>=K)
+          {
+            output<<"Clique of size "<<n-s<<" : ";
+            for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
+              output<<std::endl;
+              //std::cout<<"Clique Size: "<<n-s<<std::endl;
+          }
           curr_cliques.push_back(curr_clique);
           found=true;
           break;
@@ -147,10 +151,14 @@ void find_cliques(std::vector<std::vector<int> > graph, int k)
           curr_clique=expand_vertex(neighbors,curr_clique,j);
       s=curr_clique_size(curr_clique);
       if(s<min) min=s;
-      output<<"Clique of size "<<n-s<<" : ";
-      for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-      output<<std::endl;
-      std::cout<<"Clique Size: "<<n-s<<std::endl;
+      //TODO remove condition
+      if(n-s>=K)
+      {
+        output<<"Clique of size "<<n-s<<" : ";
+        for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
+          output<<std::endl;
+        //std::cout<<"Clique Size: "<<n-s<<std::endl;
+      }
       curr_cliques.push_back(curr_clique);
       if(s<=k)
       {
@@ -160,7 +168,7 @@ void find_cliques(std::vector<std::vector<int> > graph, int k)
   }
 }
 //Qi inter Qj
-void pairwise_intersections(int k)
+void pairwise_intersections(int k, int K)
 {
     for(p=0; p<curr_cliques.size(); p++)
     {
@@ -169,8 +177,8 @@ void pairwise_intersections(int k)
         {
             if(found) break;
             counter++;
-            std::cout<<counter<<". ";
-            output<<counter<<". ";
+            //std::cout<<counter<<". ";
+            //output<<counter<<". ";
             std::vector<int> curr_clique=allcurr_clique;
             for(r=0; r<curr_clique.size(); r++)
                 if(curr_cliques[p][r]==0 && curr_cliques[q][r]==0) curr_clique[r]=0;
@@ -179,10 +187,14 @@ void pairwise_intersections(int k)
             if(s<min) min=s;
             if(s<=k)
             {
-                output<<"Clique of size "<<n-s<<" : ";
-                for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-                output<<std::endl;
-                std::cout<<"Clique Size: "<<n-s<<std::endl;
+                //TODO remove condition
+                if(n-s>=K)
+                {
+                  output<<"Clique of size "<<n-s<<" : ";
+                  for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
+                    output<<std::endl;
+                    //std::cout<<"Clique Size: "<<n-s<<std::endl;
+                }
                 found=true;
                 break;
             }
@@ -190,10 +202,14 @@ void pairwise_intersections(int k)
                 curr_clique=expand_vertex(neighbors,curr_clique,j);
             s=curr_clique_size(curr_clique);
             if(s<min) min=s;
-            output<<"Clique of size "<<n-s<<" : ";
-            for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-            output<<std::endl;
-            std::cout<<"Clique Size: "<<n-s<<std::endl;
+            //TODO remove condition
+            if(n-s>=K)
+            {
+              output<<"Clique of size "<<n-s<<" : ";
+              for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
+                output<<std::endl;
+                //std::cout<<"Clique Size: "<<n-s<<std::endl;
+            }
             if(s<=k) {
                 found=true;
                 break;
