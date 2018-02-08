@@ -6,7 +6,7 @@ int main()
     std::cout<<"Clique Algorithm."<<std::endl;
     input>>n;
     std::vector< std::vector<int> > graph;
-    int k;
+    int K,k;
     for(i=0; i<n; i++)
     {
         std::vector<int> row;
@@ -26,9 +26,9 @@ int main()
     std::cin>>K;
     k=n-K;
 //Find Cliques
-    find_cliques(graph,K);
+    find_cliques(graph,k);
 //Pairwise Intersections
-    pairwise_intersections();
+    pairwise_intersections(k);
     if(found) std::cout<<"Found Clique of size at least "<<K<<"."<<std::endl;
     else std::cout<<"Could not find Clique of size at least "<<K<<"."<<std::endl
                       <<"Maximum Clique size found "<<n-min<<"."<<std::endl;
