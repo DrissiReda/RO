@@ -14,13 +14,23 @@
     linkcolor=black,
     urlcolor=cyan
 }
-\title{Problème de clique maximum}
+\title{\Huge Problème de clique maximum}
 
-\author{Drissi Mohamed Reda}
-
+\author{\texttt{reda-mohamed.drissi@isty.uvsq.fr}\\
+        Drissi Mohamed Reda}
+\date{19 Fevrier 2018}
 \begin{document}
-
-\maketitle
+\makeatletter
+    \begin{titlepage}
+        \begin{center}
+        	\includegraphics[width=40mm]{Report/uvsq-header.png}\par \vspace{1cm}
+            {\@title }\\[4ex]
+            {\@author}\\[4ex]
+            {\@date} \\ [4ex]
+        \end{center}
+    \end{titlepage}
+\makeatother
+\thispagestyle{empty}
 \newpage
 \tableofcontents
 \newpage
@@ -80,7 +90,7 @@ $k$, nous arrêtons.
 \end{algorithmic}
 \end{algorithm}
 \subsection{Example}
-Comme example nous prenons le graphe complémentaire du \href{https://en.wikipedia.org/wiki/Frucht\_graph}{graphe de Frucht}
+Comme exemple nous prenons le graphe complémentaire du \href{https://en.wikipedia.org/wiki/Frucht\_graph}{graphe de Frucht}
 Avec les sommets :
 \begin{displaymath}
   V=\{1,2,3,...12\}
@@ -174,7 +184,7 @@ Nous allons supposer les cas les plus pessimistes, bien que ça ne soit impossib
 \textit{find\_cliques} sans passer à \textit{pairwise\_intersections}.\\
 Soit $G$ un graphe ayant $n$ sommets et une clique $Q$ :
 \subsection{complexité de \textit{add\_vertex}}
-La fonction \textit{adjoinable} prend au pire $n^2$ itérations donc une compléxité de $O(n^2)$.
+La fonction \textit{adjoinable} prend au pire $n^2$ itérations donc une complexité de $O(n^2)$.
 Car chaque sommet moins de $n$ sommets qui ne sont pas voisins, et cela prends $n$ itérations pour
 vérifier si un sommet non voisin ne fait pas partie de la clique.\\
 Pour chaque clique, trouver le nombre de sommets joignables prends au pire $n$ fois la fonction
@@ -214,7 +224,7 @@ maximum d'un graphe.
 
 \section{Test}
 Nous allons faire tourner notre code C++ sur plusieurs graphes, notre algorithme
-nous permet de choisir la taille de la clique souhaitée, cela rends le code plus partique
+nous permet de choisir la taille de la clique souhaitée, cela rends le code plus pratique
 pour s'assurer de trouver la clique maximale, nous allons choisir un nombre n=k
 Ce graphe :
 \begin{center}
@@ -247,10 +257,30 @@ Avant de passer aux tests il faut expliquer l'arborescence des fichiers.
 Nous pouvons obtenir le graphe sous différentes formes depuis les dossiers précédemment mentionnés.\\
 \textbf{N.B:} Nous allons compiler en mode non verbose (par défaut) pour ne retenir que les informations
 importantes, le détail sera à consulter depuis les \texttt{.out}.
+\paragraph{Brock200\_1}
+Commande :
+\begin{verbatim}
+  time ./clique brock200_1 21
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  Graph brock200_1
+  Graph has n = 200 vertices.
+  Find a Clique of size at least k = 21
+  Finding Cliques...
+  Found Clique of size at least 21.
+  Results are stored in outclq/brock200_1.out file
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real	0m1.776s
+  user	0m1.772s
+  sys	0m0.000s
+\end{verbatim}
 \paragraph{Keller4}
 Commande :
 \begin{verbatim}
-time ./clique keller4 11
+  time ./clique keller4 11
 \end{verbatim}
 Résultat
 \begin{verbatim}
@@ -266,5 +296,55 @@ Temps d'exécution :
   real	0m0.036s
   user	0m0.032s
   sys	  0m0.000s
+\end{verbatim}
+\paragraph{MANN\_a9}
+Commande :
+\begin{verbatim}
+  time ./clique MANN_a9 16
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  Graph MANN_a9
+  Graph has n = 45 vertices.
+  Find a Clique of size at least k = 16
+  Finding Cliques...
+  Found Clique of size at least 16.
+  Results are stored in outclq/MANN_a9.out file
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real	0m0.005s
+  user	0m0.004s
+  sys	0m0.000s
+\end{verbatim}
+\paragraph{Sanr200\_0.7}
+Commande :
+\begin{verbatim}
+  time ./clique sanr200_0.7 18
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  Graph sanr200_0.7
+  Graph has n = 200 vertices.
+  Find a Clique of size at least k = 18
+  Finding Cliques...
+  Found Clique of size at least 18.
+  Results are stored in outclq/sanr200_0.7.out file
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+    real	0m0.277s
+    user	0m0.276s
+    sys	0m0.000s
+\end{verbatim}
+\paragraph{}
+Commande :
+\begin{verbatim}
+\end{verbatim}
+Résultat
+ \begin{verbatim}
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
 \end{verbatim}
 \end{document}
