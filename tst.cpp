@@ -4,17 +4,31 @@ using namespace std;
 
 int main()
 {
-    ifstream in("brock200_2");
-    ofstream out("outtt");
-    int t[200][200]={0},a,b;
-    for(int i=0;i<200;i++)
+    ifstream in;
+    ofstream out;
+    int N;
+    char inp[255]={0},outp[255]={0};
+    cout << "choose input " ;
+    cin >> inp;
+    cout << endl << "choose outp "; 
+    cin >> outp;
+    in.open(inp);out.open(outp);
+    cout << "choose size " ;
+    cin >> N;
+    cout << endl;
+    int t[N][N]={0},a,b;
+    int z=0;
+    for(int i=0;!in.eof();i++,z++)
     {
         in >> a >> b;
-        t[a][b]=1;
+        t[a-1][b-1]=1;
+        t[b-1][a-1]=1;
     }
-    for(int i=0;i<200;i++)
+    cout << "size is " << z << endl;
+    out << N << endl;
+    for(int i=0;i<N;i++)
     {
-        for(int j=0;j<200;j++)
+        for(int j=0;j<N;j++)
             out << t[i][j] << " ";
         out << endl;
     }
