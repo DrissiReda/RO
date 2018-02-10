@@ -1,3 +1,5 @@
+#ifndef CLIQUE
+#define CLIQUE
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -16,7 +18,7 @@ bool adjoinable(std::vector<int> neighbor, std::vector<int> curr_clique);
 int max_adjoinable(std::vector<std::vector<int> > neighbors, std::vector<int> curr_clique);
 std::vector<int> add_vertex(std::vector<std::vector<int> > neighbors, std::vector<int> curr_clique);
 std::vector<int> expand_vertex(std::vector<std::vector<int> > neighbors, std::vector<int> curr_clique, int k);
-int curr_clique_size(std::vector<int> curr_clique);
+int clique_pop_count(std::vector<int> curr_clique);
 std::vector<std::vector<int> > find_neighbors(std::vector<std::vector<int> > graph);
 void find_cliques(std::vector<std::vector<int> > graph, int k, int K);
 void pairwise_intersections(int k, int K);
@@ -26,6 +28,7 @@ bool adjoinable(std::vector<int> neighbor, std::vector<int> curr_clique)
     bool check=true;
     for(int i=0; i<neighbor.size(); i++)
         //if only one edge is missing, then it is not adjoinable
+        //cliques requires every vertex to have edges to all other vertices
         if(curr_clique[neighbor[i]]==0)
         {
             check=false;
@@ -47,6 +50,7 @@ int max_adjoinable(std::vector<std::vector<int> > neighbors, std::vector<int> cu
             for(int j=0; j<temp_curr_clique.size(); j++)
                 if(temp_curr_clique[j]==1 && adjoinable(neighbors[j], temp_curr_clique)==true)
                     sum++;
+            //new Vmax
             if(sum>max)
             {
                 max=sum;
@@ -61,6 +65,7 @@ std::vector<int> add_vertex(std::vector<std::vector<int> > neighbors, std::vecto
 {
     std::vector<int> temp_curr_clique=curr_clique;
     int r=0;
+    //repeat until it has no adjoinable vertices
     while(r!=-1)
     {
         r= max_adjoinable(neighbors,temp_curr_clique);
@@ -84,6 +89,7 @@ std::vector<int> expand_vertex(std::vector<std::vector<int> > neighbors, std::ve
                     index=j;
                     sum++;
                 }
+            //exactly one vertex inside the clique that is not a neighbor
             if(sum==1 && curr_clique[neighbors[i][index]]==0)
             {
                 temp_curr_clique[neighbors[i][index]]=1;
@@ -97,7 +103,7 @@ std::vector<int> expand_vertex(std::vector<std::vector<int> > neighbors, std::ve
     return temp_curr_clique;
 }
 
-int curr_clique_size(std::vector<int> curr_clique)
+int clique_pop_count(std::vector<int> curr_clique)
 {
     int count=0;
     for(int i=0; i<curr_clique.size(); i++)
@@ -124,6 +130,7 @@ void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
       allcurr_clique.push_back(1);
   for(i=0; i<allcurr_clique.size(); i++)
   {
+      //check if result is found
       if(found) break;
       counter++;
       //std::cout<<counter<<". ";
@@ -131,7 +138,7 @@ void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
       std::vector<int> curr_clique=allcurr_clique;
       curr_clique[i]=0;
       curr_clique=add_vertex(neighbors,curr_clique);
-      s=curr_clique_size(curr_clique);
+      s=clique_pop_count(curr_clique);
       if(s<min) min=s;
       if(s<=k)
       {
@@ -149,7 +156,7 @@ void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
       }
       for(j=0; j<n-k; j++)
           curr_clique=expand_vertex(neighbors,curr_clique,j);
-      s=curr_clique_size(curr_clique);
+      s=clique_pop_count(curr_clique);
       if(s<min) min=s;
       //TODO remove condition
       if(n-s>=K)
@@ -183,7 +190,7 @@ void pairwise_intersections(int k, int K)
             for(r=0; r<curr_clique.size(); r++)
                 if(curr_cliques[p][r]==0 && curr_cliques[q][r]==0) curr_clique[r]=0;
             curr_clique=add_vertex(neighbors,curr_clique);
-            s=curr_clique_size(curr_clique);
+            s=clique_pop_count(curr_clique);
             if(s<min) min=s;
             if(s<=k)
             {
@@ -200,7 +207,7 @@ void pairwise_intersections(int k, int K)
             }
             for(j=0; j<k; j++)
                 curr_clique=expand_vertex(neighbors,curr_clique,j);
-            s=curr_clique_size(curr_clique);
+            s=clique_pop_count(curr_clique);
             if(s<min) min=s;
             //TODO remove condition
             if(n-s>=K)
@@ -217,3 +224,4 @@ void pairwise_intersections(int k, int K)
         }
     }
 }
+#endif //CLIQUE

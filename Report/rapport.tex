@@ -81,7 +81,7 @@ Avec les sommets :
 \begin{center}
   \begin{figure}[!htp]
     \caption{Complément du graphe de Frucht}
-    \includegraphics[scale=0.7]{Report/frucht-compl.png}
+    \includegraphics[scale=0.5]{Report/frucht-compl.png}
   \end{figure}
 \end{center}
 
@@ -161,6 +161,47 @@ Nous ajoutons le sommet $12$ à $Q$. Nous retrouvons la nouvelle clique \\
 $Q_3=\{3, 5, 7, 11, 12\}$ de taille 5.\\
 Puisque la clique est de taille 5, nous nous arrêtons là.
 \textbf{FIX THE VERTICES NAMING}
+\section{Complexité}
+Nous allons calculer la complexité de cet algorithme :
+Nous allons supposer les cas les plus pessimistes, bien que ça ne soit impossible pour en arriver
+à ce genre de situations, la plupart des cas testés trouvent un résultat dans la fonction
+\textit{find\_cliques} sans passer à \textit{pairwise\_intersections}.\\
+Soit $G$ un graphe ayant $n$ sommets et une clique $Q$ :
+\subsection{complexité de \textit{add\_vertex}}
+La fonction \textit{adjoinable} prend au pire $n^2$ itérations donc une compléxité de $O(n^2)$.
+Car chaque sommet moins de $n$ sommets qui ne sont pas voisins, et cela prends $n$ itérations pour
+vérifier si un sommet non voisin ne fait pas partie de la clique.\\
+Pour chaque clique, trouver le nombre de sommets joignables prends au pire $n$ fois la fonction
+\textit{adjoinable}, ce qui en résulte que la complexité de la fonction \textit{max\_adjoinable} est
+de $O(n^3)$.\\
+Puis pour chaque clique trouver qu'un sommet où le nombre de sommets joignables est maximal prends
+$n$ fois la fonction \textit{max\_adjoinable}, puisqu'il y a au pire, $n$ sommets en dehors de la
+clique, donc $n*O(n^3)=O(n^4)$. La fonction \textit{add\_vertex} s'achève si au pire $n$ sommets
+ont été ajoutés à la clique donc nous trouvons $n*O(n^4)=O(n^5)$.\\
+La complexité de \textit{add\_vertex} est de $O(n^5)$.
+\subsection{Complexité de \textit{expand\_vertex}}
+Pour trouver un sommet $v \notin Q$ qui a exactement un sommet $w \in Q$ qui n'est pas son voisin
+nous avons besoin d'au pire $n^2$ itérations. Si nous trouvons un tel sommet $w$ nous avons besoin
+d'une seule itération.\\ Puis nous avons besoin de $O(n^5)$ pour performer \textit{add\_vertex}.\\
+La complexité de \textit{expand\_vertex} est donc de $O(n^5)$.
+\subsection{Complexité de \textit{find\_cliques}}
+Pour chaque itération, \textit{add\_vertex} prends $O(n^5)$ puis \textit{expand\_vertex} est exécutée
+au pire $n$ fois (puisque $k \leq n$). Alors la complexité est de $O(n^5+n*n^5)=O(n^6)$. \\
+Puisqu'on exécute ces itérations $n$ fois, alors la complexité devient :
+\begin{displaymath}
+  O(n*n^6)=O(n^7)
+\end{displaymath}
+\subsection{Complexité de \textit{pairwise\_intersections}}
+Nous avons moins de $n^2$ de paires distinctes de cliques maximales trouvées par \textit{find\_cliques}
+Donc similairement à \textit{find\_cliques} pour chaque itération la complexité sera de $O(n^5+n*n^5)=O(n^6)$
+exécutée $n^2$ fois, cela donne $n^2*O(n^6)=O(n^8)$.
+\subsection{Complexité totale}
+La complexité totale sera la somme de la complexité de \textit{find\_cliques}, \textit{find\_neighbors}
+et \textit{pairwise\_intersections}. Donc :
+\begin{displaymath}
+C(n)=O(n^2)+O(n^7)+O(n^8)
+\end{displaymath}
+
 \section{Implémentation}
 Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
 maximum d'un graphe.

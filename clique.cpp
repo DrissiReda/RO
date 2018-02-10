@@ -5,7 +5,7 @@ int main()
 //Read Graph (note we work with the complement of the input graph)
     std::cout<<"Choose graph"<<std::endl;
     std::cin >> inp;
-    input.open((const char*)inp);
+    input.open(inp);
     input>>n;
     std::vector< std::vector<int> > graph;
     int K,k;
@@ -20,7 +20,7 @@ int main()
         }
         graph.push_back(row);
     }
-//Find Neighbors
+//Find Neighbors for each vertex
     neighbors=find_neighbors(graph);
     std::cout<<"Graph has n = "<<n<<" vertices."<<std::endl;
 //Read maximum size of Clique wanted
@@ -29,7 +29,7 @@ int main()
     k=n-K;
 //Find Cliques
     find_cliques(graph, k, K);
-//Pairwise Intersections
+//Find Additional Cliques through Pairwise Intersections
     pairwise_intersections(k, K);
     if(found) std::cout<<"Found Clique of size at least "<<K<<"."<<std::endl;
     else std::cout<<"Could not find Clique of size at least "<<K<<"."<<std::endl
