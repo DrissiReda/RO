@@ -1,20 +1,30 @@
 #include <iostream>
 #include <fstream>
+#include <cstring>
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
     ifstream in;
     ofstream out;
     int N;
-    char inp[255]={0},outp[255]={0};
-    cout << "choose input " ;
-    cin >> inp;
-    cout << endl << "choose outp "; 
-    cin >> outp;
+    char inp[255]="edgls/",outp[255]="adjmat/";
+
+    strcat(inp,argv[1]); strcat(inp,".ls"); strcat(outp,argv[1]); strcat(outp,".mat");
+    cout << "choose input " << inp << endl;
+    cout << endl << "choose outp "<<outp<<endl;
     in.open(inp);out.open(outp);
-    cout << "choose size " ;
-    cin >> N;
+    in.seekg(-2,ios::end);
+    char ch;
+    in.get(ch);
+    while(ch!='\n')
+    {
+      in.seekg(-2,ios::cur);
+      in.get(ch);
+    }
+    in >> N;
+    in.seekg(0,ios::beg);
+    cout << "choose size " <<N;
     cout << endl;
     int t[N][N]={0},a,b;
     int z=0;

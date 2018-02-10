@@ -1,6 +1,15 @@
+CXX=g++
+OPTS= -DVERBOSE
+CXXFLAGS= -g
+EXEC=clique
+SRC=clique.cpp
 default:
-	g++ -g clique.cpp -o clique
+	#@mkdir edgls adjmat outclq
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(EXEC)
+	pdflatex Report/rapport.tex
+verbose:
+	#@mkdir edgls adjmat outclq
+	$(CXX) $(CXXFLAGS) $(OPTS) $(SRC) -o $(EXEC)
 	pdflatex Report/rapport.tex
 conv:
-	g++ -g edgtoadj.cpp -o edgtoadj
-
+	$(CXX) edgtoadj.cpp -o edgtoadj

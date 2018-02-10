@@ -1,14 +1,21 @@
+#ifdef VERBOSE
+#include "clique_verbose.hpp"
+#else
 #include "clique.hpp"
-
-int main()
+#endif
+int main(int argc,char* argv[])
 {
+   int K,k;
 //Read Graph (note we work with the complement of the input graph)
-    std::cout<<"Choose graph"<<std::endl;
-    std::cin >> inp;
+    std::cout<<"Graph "<<argv[1]<<std::endl;
+    std::strcat(inp,argv[1]); std::strcat(inp,".mat");
+    std::strcat(outp,argv[1]); std::strcat(outp,".out");
+    K=atoi(argv[2]);
     input.open(inp);
+    output.open(outp);
     input>>n;
     std::vector< std::vector<int> > graph;
-    int K,k;
+
     for(i=0; i<n; i++)
     {
         std::vector<int> row;
@@ -24,8 +31,7 @@ int main()
     neighbors=find_neighbors(graph);
     std::cout<<"Graph has n = "<<n<<" vertices."<<std::endl;
 //Read maximum size of Clique wanted
-    std::cout<<"Find a Clique of size at least k = ";
-    std::cin>>K;
+    std::cout<<"Find a Clique of size at least k = "<<K<< std::endl;
     k=n-K;
 //Find Cliques
     find_cliques(graph, k, K);
@@ -34,6 +40,6 @@ int main()
     if(found) std::cout<<"Found Clique of size at least "<<K<<"."<<std::endl;
     else std::cout<<"Could not find Clique of size at least "<<K<<"."<<std::endl
                       <<"Maximum Clique size found "<<n-min<<"."<<std::endl;
-    std::cout<<"Results are stored in 'cliques' file"<<std::endl;
+    std::cout<<"Results are stored in outclq/"<<argv[1] <<".out file"<<std::endl;
     return 0;
 }

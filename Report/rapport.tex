@@ -5,8 +5,15 @@
 \usepackage{graphicx}
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
-\usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
+\usepackage{xcolor}
 
+\hypersetup{
+    colorlinks=true,
+    linkbordercolor = {white},
+    linkcolor=black,
+    urlcolor=cyan
+}
 \title{Problème de clique maximum}
 
 \author{Drissi Mohamed Reda}
@@ -160,7 +167,6 @@ Nous trouvons que le maximum est :
 Nous ajoutons le sommet $12$ à $Q$. Nous retrouvons la nouvelle clique \\
 $Q_3=\{3, 5, 7, 11, 12\}$ de taille 5.\\
 Puisque la clique est de taille 5, nous nous arrêtons là.
-\textbf{FIX THE VERTICES NAMING}
 \section{Complexité}
 Nous allons calculer la complexité de cet algorithme :
 Nous allons supposer les cas les plus pessimistes, bien que ça ne soit impossible pour en arriver
@@ -228,4 +234,37 @@ donne le résultat :
   1. Clique of size 3 : 4 5 6
   \end{verbatim}
 \end{center}
+Passons aux choses sérieuses, nous avons téléchargé des graphes en format \texttt{.clq.b} depuis les
+instances de \href{https://cse.unl.edu/~tnguyen/npbenchmarks/clique.html}{DIMAC}. \\
+Avant de passer aux tests il faut expliquer l'arborescence des fichiers.
+\begin{itemize}
+  \item \textbf{bingraph:} Contient les graphes téléchargés depuis le site en \texttt{.clq}.
+  \item \textbf{edgls:} Contient les listes d'arrêtes de chaque graphe en \texttt{.ls} convertie avec \texttt{bin2asc}
+    obtenu depuis \href{https://cse.unl.edu/~tnguyen/npbenchmarks/instances/converter.tar.gz}{ce site}.
+  \item \textbf{adjmat:} Contient les matrices d'adjacences en \texttt{.mat}obtenues avec \texttt{edgtoadj}
+  \item \textbf{outclq:} Contient les cliques résultantes en \texttt{.out}.
+\end{itemize}
+Nous pouvons obtenir le graphe sous différentes formes depuis les dossiers précédemment mentionnés.\\
+\textbf{N.B:} Nous allons compiler en mode non verbose (par défaut) pour ne retenir que les informations
+importantes, le détail sera à consulter depuis les \texttt{.out}.
+\paragraph{Keller4}
+Commande :
+\begin{verbatim}
+time ./clique keller4 11
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  Graph keller4
+  Graph has n = 171 vertices.
+  Find a Clique of size at least k = 11
+  Finding Cliques...
+  Found Clique of size at least 11.
+  Results are stored in outclq/keller4.out file
+\end{verbatim}
+Temps d'exécution :
+\begin{verbatim}
+  real	0m0.036s
+  user	0m0.032s
+  sys	  0m0.000s
+\end{verbatim}
 \end{document}
