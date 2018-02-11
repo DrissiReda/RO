@@ -1,0 +1,7 @@
+Graph MANN_a9
+Graph has n = 45 vertices.
+Find a Clique of size at least k = 17
+Finding Cliques...
+Could not find Clique of size at least 17.
+Maximum Clique size found 16.
+Results are stored in outclq/MANN_a9.out file

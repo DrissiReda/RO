@@ -6,7 +6,7 @@
 #include <cstring>
 #include <vector>
 ///////////////////////variables/////////////////////////////////
-char inp[255]="adjmat/",outp[255]="outclq/";
+char inp[255]={0},outp[255]="outclq/";
 std::ifstream input;
 std::ofstream output;
 int n, i, j, p, q, r, s, min, edge, counter=0;

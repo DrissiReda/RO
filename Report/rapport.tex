@@ -40,7 +40,7 @@ et $E$ l'ensemble des arrêtes(Nous ignorons les arrêtes liant une arrête à e
 Nous nommons les sommets du graphe 1,2, ... n. Cet algorithme permet de trouver une clique
 de taille d'au moins $k$. À chaque étape, si nous trouvons une clique de taille d'au moins
 $k$, nous arrêtons.
-\section{Algorithme et Test}
+\section{Algorithme}
 \subsection{Algorithme}
 \begin{algorithm}
 \begin{algorithmic}
@@ -218,10 +218,38 @@ et \textit{pairwise\_intersections}. Donc :
 C(n)=O(n^2)+O(n^7)+O(n^8)
 \end{displaymath}
 
-\section{Implémentation}
+\section{Implémentation en C++}
 Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
 maximum d'un graphe.
-
+\section{Test de gestion de mémoire Valgrind ©}
+Nous allons utiliser valgrind pour un cas où l'algorithme parcours toutes ses fonctions, donc
+pour tester un cas où $k > |Q_{max}|$.\\
+Il faut bien sûr faire tourner le programme en mode non verbose pour ne garder que le principal.
+\begin{verbatim}
+  ==32052== Memcheck, a memory error detector
+  ==32052== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+  ==32052== Using Valgrind-3.12.0.SVN and LibVEX; rerun with -h for copyright info
+  ==32052== Command: ./clique MANN_a9 17
+  ==32052==
+  Graph MANN_a9
+  Graph has n = 45 vertices.
+  Find a Clique of size at least k = 17
+  Finding Cliques...
+  Could not find Clique of size at least 17.
+  Maximum Clique size found 16.
+  Results are stored in outclq/MANN_a9.out file
+  ==32052==
+  ==32052== HEAP SUMMARY:
+  ==32052==     in use at exit: 0 bytes in 0 blocks
+  ==32052==   total heap usage: 36,143,744 allocs, 36,143,744 frees, 2,651,510,276 bytes allocated
+  ==32052==
+  ==32052== All heap blocks were freed -- no leaks are possible
+  ==32052==
+  ==32052== For counts of detected and suppressed errors, rerun with: -v
+  ==32052== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+\end{verbatim}
+Pour plus de détails, voir le fichier \texttt{valgrind-out}.\\
+Nous remarquons qu'ils n'y a pas d'erreurs de mémoires, ni de fuites possibles.
 \section{Test}
 Nous allons faire tourner notre code C++ sur plusieurs graphes, notre algorithme
 nous permet de choisir la taille de la clique souhaitée, cela rends le code plus pratique
@@ -260,7 +288,7 @@ importantes, le détail sera à consulter depuis les \texttt{.out}.
 \paragraph{Brock200\_1}
 Commande :
 \begin{verbatim}
-  time ./clique brock200_1 21
+  time ./clique adjmat/brock200_1.mat 21
 \end{verbatim}
 Résultat
 \begin{verbatim}
@@ -280,7 +308,7 @@ Temps d'exécution
 \paragraph{Keller4}
 Commande :
 \begin{verbatim}
-  time ./clique keller4 11
+  time ./clique adjmat/keller4.mat 11
 \end{verbatim}
 Résultat
 \begin{verbatim}
@@ -300,7 +328,7 @@ Temps d'exécution :
 \paragraph{MANN\_a9}
 Commande :
 \begin{verbatim}
-  time ./clique MANN_a9 16
+  time ./clique adjmat/MANN_a9.mat 16
 \end{verbatim}
 Résultat
 \begin{verbatim}
@@ -320,7 +348,7 @@ Temps d'exécution
 \paragraph{Sanr200\_0.7}
 Commande :
 \begin{verbatim}
-  time ./clique sanr200_0.7 18
+  time ./clique adjmat/sanr200_0.7.mat 18
 \end{verbatim}
 Résultat
 \begin{verbatim}

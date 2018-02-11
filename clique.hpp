@@ -6,7 +6,7 @@
 #include <cstring>
 #include <vector>
 ///////////////////////variables/////////////////////////////////
-char inp[255]="adjmat/",outp[255]="outclq/";
+char inp[255]={0},outp[255]="outclq/";
 std::ifstream input;
 std::ofstream output;
 int n, i, j, p, q, r, s, min, edge, counter=0;
@@ -132,25 +132,23 @@ void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
   for(i=0; i<allcurr_clique.size(); i++)
   {
       //check if result is found
-      if(found) break;
-      counter++;
-      //std::cout<<counter<<". ";
-      //output<<counter<<". ";
+      if(found)
+        break;
       std::vector<int> curr_clique=allcurr_clique;
       curr_clique[i]=0;
       curr_clique=add_vertex(neighbors,curr_clique);
       s=clique_pop_count(curr_clique);
-      if(s<min) min=s;
+      if(s<min)
+        min=s;
       if(s<=k)
       {
-          //TODO remove condition
-          if(n-s>=K)
-          {
-            output<<"Clique of size "<<n-s<<" : ";
-            for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-              output<<std::endl;
-              //std::cout<<"Clique Size: "<<n-s<<std::endl;
-          }
+          counter++;
+          output<<counter<<". ";
+          output<<"Clique of size "<<n-s<<" : ";
+          for(j=0; j<curr_clique.size(); j++)
+            if(curr_clique[j]==0)
+              output<<j+1<<" ";
+          output<<std::endl;
           curr_cliques.push_back(curr_clique);
           found=true;
           break;
@@ -158,15 +156,13 @@ void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
       for(j=0; j<n-k; j++)
           curr_clique=expand_vertex(neighbors,curr_clique,j);
       s=clique_pop_count(curr_clique);
-      if(s<min) min=s;
-      //TODO remove condition
-      if(n-s>=K)
-      {
+      if(s<min)
+        min=s;
         output<<"Clique of size "<<n-s<<" : ";
-        for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-          output<<std::endl;
-        //std::cout<<"Clique Size: "<<n-s<<std::endl;
-      }
+        for(j=0; j<curr_clique.size(); j++)
+          if(curr_clique[j]==0)
+            output<<j+1<<" ";
+        output<<std::endl;
       curr_cliques.push_back(curr_clique);
       if(s<=k)
       {
@@ -185,40 +181,36 @@ void pairwise_intersections(int k, int K)
         {
             if(found) break;
             counter++;
-            //std::cout<<counter<<". ";
-            //output<<counter<<". ";
+            output<<counter<<". ";
             std::vector<int> curr_clique=allcurr_clique;
             for(r=0; r<curr_clique.size(); r++)
-                if(curr_cliques[p][r]==0 && curr_cliques[q][r]==0) curr_clique[r]=0;
+                if(curr_cliques[p][r]==0 && curr_cliques[q][r]==0)
+                  curr_clique[r]=0;
             curr_clique=add_vertex(neighbors,curr_clique);
             s=clique_pop_count(curr_clique);
             if(s<min) min=s;
             if(s<=k)
             {
-                //TODO remove condition
-                if(n-s>=K)
-                {
-                  output<<"Clique of size "<<n-s<<" : ";
-                  for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-                    output<<std::endl;
-                    //std::cout<<"Clique Size: "<<n-s<<std::endl;
-                }
-                found=true;
-                break;
+              output<<"Clique of size "<<n-s<<" : ";
+              for(j=0; j<curr_clique.size(); j++)
+                if(curr_clique[j]==0)
+                  output<<j+1<<" ";
+              output<<std::endl;
+              found=true;
+              break;
             }
             for(j=0; j<k; j++)
                 curr_clique=expand_vertex(neighbors,curr_clique,j);
             s=clique_pop_count(curr_clique);
-            if(s<min) min=s;
-            //TODO remove condition
-            if(n-s>=K)
+            if(s<min)
+              min=s;
+            output<<"Clique of size "<<n-s<<" : ";
+            for(j=0; j<curr_clique.size(); j++)
+              if(curr_clique[j]==0)
+                output<<j+1<<" ";
+            output<<std::endl;
+            if(s<=k)
             {
-              output<<"Clique of size "<<n-s<<" : ";
-              for(j=0; j<curr_clique.size(); j++) if(curr_clique[j]==0) output<<j+1<<" ";
-                output<<std::endl;
-                //std::cout<<"Clique Size: "<<n-s<<std::endl;
-            }
-            if(s<=k) {
                 found=true;
                 break;
             }
