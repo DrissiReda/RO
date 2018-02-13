@@ -8,11 +8,16 @@ int main(int argc,char* argv[])
     if(argc<2)
     {
       std::cout << "Usage : ./clique <input> [0-1] [wanted clique size]" << std::endl;
-      std::cout << "Enter 1 for deep search, or 0 for fast (default is fast)" << std::endl;
+      std::cout << "Enter 0 for deep search, or 1 for fast (default is fast)" << std::endl;
       std::cout << "You can choose your clique size, or let the program find the max for you" << std::endl;
       return 0;
     }
     int K,k;
+    bool fast=1,givenK=0;
+    float den;
+    std::vector< std::vector<int> > graph;
+    if(argc>2)
+      fast=atoi(argv[2]);
 //Read Graph (note we work with the complement of the input graph)
     std::cout<<"Graph "<<argv[1]<<std::endl;
     std::strcpy(inp,argv[1]);
@@ -41,17 +46,9 @@ int main(int argc,char* argv[])
         argv[1][lc]='\0';
     std::strcat(outp,argv[1]);
     std::strcat(outp,".out");
-    bool fast=1;
-    if(argc>2)
-      fast=atoi(argv[2]);
-    K=20;
     input.open(inp);
     output.open(outp);
-    float den;
     input>>n>>den;
-
-    std::vector< std::vector<int> > graph;
-
     for(int i=0; i<n; i++)
     {
         std::vector<int> row;
@@ -64,11 +61,24 @@ int main(int argc,char* argv[])
         graph.push_back(row);
     }
     std::cout << "density is " << den << std::endl;
+    if(argc>3)
+    {
+      K=atoi(argv[3]);
+      givenK=1;
+    }
+    else if(argc==3 && atoi(argv[2])>1)
+    {
+      K=atoi(argv[2]);
+      givenK=1;
+    }
+    else
+    {
     //Lower bound
-    K= ceil((float)(1/(1-(float)den)));
+      K= ceil((float)(1/(1-(float)den)));
+    }
 //Find Neighbors for each vertex
     neighbors=find_neighbors(graph);
-    std::cout<<"Graph has n = "<<n<<" vertices."<<std::endl;
+    std::cout<<"Graph has n = "<<n<<" vertices, "<<((fast)?"fast":"deep")<<" mode"<<std::endl;
 //Read maximum size of Clique wanted
     std::cout<<"Finding Cliques..."<<std::endl;
 
@@ -88,7 +98,7 @@ int main(int argc,char* argv[])
         pairwise_intersections(k, K);
       //init our new K as the max found +1
       K=curr_max+1;
-    }while(found);// repeat while finding graphs
+    }while(found && !givenK);// repeat while finding graphs
 //Find Additional Cliques through Pairwise Intersections
     //
     if(found)

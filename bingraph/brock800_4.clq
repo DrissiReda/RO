@@ -1,3 +1,22 @@
+c FILE:  brock800_4.b
+c
+c Graph Generator
+c
+c By: Mark Brockington (brock@cs.ualberta.ca)
+c and Joe Culberson (joe@cs.ualberta.ca)
+c
+c Graph Size:800, Clique Size: 26
+c Seed:3, Edge Density:  0.65000
+c Depth 2 Hiding
+c
+c Clique Elements are:
+c 508 494 269 713 293 342 510 680 393 246 
+c 395 388 686 7 333 323 111 560 156 134 
+c 623 153 160 665 361 16 
+c
+c Estimated Size of Uncompressed File:   2.0MB
+c
+p edge 800 207643
 e 2 1
 e 3 1
 e 3 2

@@ -1,37 +1,3 @@
-1. Clique of size 8 : 1 10 22 61 94 106 115 161 
-Clique of size 9 : 1 15 22 29 98 115 169 173 189 
-Clique of size 9 : 1 15 22 98 106 161 169 186 189 
-Clique of size 10 : 2 21 35 77 83 84 105 110 132 185 
-Clique of size 9 : 1 15 22 29 98 115 169 173 189 
-Clique of size 10 : 2 21 35 77 83 84 105 110 132 185 
-Clique of size 9 : 3 16 29 32 52 115 119 125 141 
-Clique of size 9 : 4 10 14 50 69 70 118 134 158 
-Clique of size 9 : 5 22 27 53 54 73 129 131 148 
-Clique of size 10 : 10 41 48 49 63 71 88 94 120 157 
-Clique of size 9 : 6 42 43 48 63 88 120 127 157 
-Clique of size 9 : 6 8 28 37 61 83 87 109 132 
-Clique of size 9 : 9 13 22 57 66 125 128 131 148 
-Clique of size 10 : 10 32 41 49 92 103 108 134 141 200 
-Clique of size 9 : 35 55 72 90 132 158 161 181 185 
-Clique of size 10 : 12 19 36 44 58 69 81 117 118 152 
-Clique of size 9 : 5 13 37 57 87 91 95 113 167 
-Clique of size 9 : 10 14 54 70 95 118 124 136 198 
-Clique of size 9 : 15 16 24 44 73 76 83 154 183 
-Clique of size 9 : 16 35 56 68 86 96 115 154 171 
-Clique of size 9 : 10 14 43 54 107 118 146 181 187 
-Clique of size 9 : 25 26 70 89 106 153 161 178 197 
-Clique of size 9 : 34 65 83 96 118 156 166 179 183 
-Clique of size 10 : 14 34 43 58 59 69 118 152 170 181 
-Clique of size 9 : 4 15 21 32 46 108 158 166 179 
-Clique of size 10 : 6 8 10 48 71 88 91 94 131 148 
-Clique of size 10 : 12 19 36 44 58 69 81 117 118 152 
-Clique of size 10 : 4 15 57 69 82 87 92 113 150 169 
-Clique of size 9 : 24 25 72 76 85 119 126 190 192 
-Clique of size 9 : 1 15 22 29 98 106 169 186 189 
-Clique of size 9 : 6 14 25 57 78 110 120 122 131 
-Clique of size 9 : 12 28 61 73 109 139 146 151 172 
-Clique of size 9 : 7 29 42 46 70 127 130 136 174 
-2. Clique of size 11 : 30 36 84 85 102 118 150 163 176 183 200 
 Clique of size 9 : 1 15 22 98 106 161 169 186 189 
 Clique of size 10 : 2 21 35 77 83 84 105 110 132 185 
 Clique of size 9 : 3 16 29 32 36 115 119 125 141 
