@@ -21,6 +21,7 @@ int main(int argc,char* argv[])
           break;
         }
         break;
+      }
     }
     //remove the extension if it exists
     int lc=-1;
