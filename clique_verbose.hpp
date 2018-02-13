@@ -7,7 +7,7 @@
 #include <vector>
 #include <cstdlib>
 ///////////////////////variables/////////////////////////////////
-char inp[255]={0},outp[255]="outclq/";
+char inp[255]= {0},outp[255]="outclq/";
 std::ifstream input;
 std::ofstream output;
 int n, i, j, p, q, r, s, min, edge, counter=0;
@@ -126,53 +126,53 @@ std::vector<std::vector<int> > find_neighbors(std::vector<std::vector<int> > gra
 }
 void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
 {
-  std::cout<<"Finding Cliques..."<<std::endl;
-  min=n+1;
-  for(i=0; i<graph.size(); i++)
-      allcurr_clique.push_back(1);
-  for(i=0; i<allcurr_clique.size(); i++)
-  {
-      //check if result is found
-      if(found)
-        break;
-      std::vector<int> curr_clique=allcurr_clique;
-      curr_clique[i]=0;
-      curr_clique=add_vertex(neighbors,curr_clique);
-      s=clique_pop_count(curr_clique);
-      if(s<min)
-        min=s;
-      if(s<=k)
-      {
-          counter++;
-          std::cout<<counter<<". ";
-          output<<counter<<". ";
-          output<<"Clique of size "<<n-s<<" : ";
-          for(j=0; j<curr_clique.size(); j++)
-            if(curr_clique[j]==0)
-              output<<j+1<<" ";
-          output<<std::endl;
-          std::cout<<"Clique Size: "<<n-s<<std::endl;
-          curr_cliques.push_back(curr_clique);
-          found=true;
-          break;
-      }
-      for(j=0; j<n-k; j++)
-          curr_clique=expand_vertex(neighbors,curr_clique,j);
-      s=clique_pop_count(curr_clique);
-      if(s<min)
-        min=s;
+    std::cout<<"Finding Cliques..."<<std::endl;
+    min=n+1;
+    for(i=0; i<graph.size(); i++)
+        allcurr_clique.push_back(1);
+    for(i=0; i<allcurr_clique.size(); i++)
+    {
+        //check if result is found
+        if(found)
+            break;
+        std::vector<int> curr_clique=allcurr_clique;
+        curr_clique[i]=0;
+        curr_clique=add_vertex(neighbors,curr_clique);
+        s=clique_pop_count(curr_clique);
+        if(s<min)
+            min=s;
+        if(s<=k)
+        {
+            counter++;
+            std::cout<<counter<<". ";
+            output<<counter<<". ";
+            output<<"Clique of size "<<n-s<<" : ";
+            for(j=0; j<curr_clique.size(); j++)
+                if(curr_clique[j]==0)
+                    output<<j+1<<" ";
+            output<<std::endl;
+            std::cout<<"Clique Size: "<<n-s<<std::endl;
+            curr_cliques.push_back(curr_clique);
+            found=true;
+            break;
+        }
+        for(j=0; j<n-k; j++)
+            curr_clique=expand_vertex(neighbors,curr_clique,j);
+        s=clique_pop_count(curr_clique);
+        if(s<min)
+            min=s;
         output<<"Clique of size "<<n-s<<" : ";
         for(j=0; j<curr_clique.size(); j++)
-          if(curr_clique[j]==0)
-            output<<j+1<<" ";
+            if(curr_clique[j]==0)
+                output<<j+1<<" ";
         output<<std::endl;
-      curr_cliques.push_back(curr_clique);
-      if(s<=k)
-      {
-          found=true;
-          break;
-      }
-  }
+        curr_cliques.push_back(curr_clique);
+        if(s<=k)
+        {
+            found=true;
+            break;
+        }
+    }
 }
 //Qi inter Qj
 void pairwise_intersections(int k, int K)
@@ -189,30 +189,30 @@ void pairwise_intersections(int k, int K)
             std::vector<int> curr_clique=allcurr_clique;
             for(r=0; r<curr_clique.size(); r++)
                 if(curr_cliques[p][r]==0 && curr_cliques[q][r]==0)
-                  curr_clique[r]=0;
+                    curr_clique[r]=0;
             curr_clique=add_vertex(neighbors,curr_clique);
             s=clique_pop_count(curr_clique);
             if(s<min) min=s;
             if(s<=k)
             {
-              output<<"Clique of size "<<n-s<<" : ";
-              for(j=0; j<curr_clique.size(); j++)
-                if(curr_clique[j]==0)
-                  output<<j+1<<" ";
-              output<<std::endl;
-              std::cout<<"Clique Size: "<<n-s<<std::endl;
-              found=true;
-              break;
+                output<<"Clique of size "<<n-s<<" : ";
+                for(j=0; j<curr_clique.size(); j++)
+                    if(curr_clique[j]==0)
+                        output<<j+1<<" ";
+                output<<std::endl;
+                std::cout<<"Clique Size: "<<n-s<<std::endl;
+                found=true;
+                break;
             }
             for(j=0; j<k; j++)
                 curr_clique=expand_vertex(neighbors,curr_clique,j);
             s=clique_pop_count(curr_clique);
             if(s<min)
-              min=s;
+                min=s;
             output<<"Clique of size "<<n-s<<" : ";
             for(j=0; j<curr_clique.size(); j++)
-              if(curr_clique[j]==0)
-                output<<j+1<<" ";
+                if(curr_clique[j]==0)
+                    output<<j+1<<" ";
             output<<std::endl;
             std::cout<<"Clique Size: "<<n-s<<std::endl;
             if(s<=k)

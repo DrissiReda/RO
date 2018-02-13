@@ -5,7 +5,7 @@
 #endif
 int main(int argc,char* argv[])
 {
-   int K,k;
+    int K,k;
 //Read Graph (note we work with the complement of the input graph)
     std::cout<<"Graph "<<argv[1]<<std::endl;
     std::strcpy(inp,argv[1]);
@@ -20,19 +20,19 @@ int main(int argc,char* argv[])
           strsep(&argv[1],"/");
           break;
         }
-      }
-      break;
+        break;
     }
     //remove the extension if it exists
     int lc=-1;
     for(i=0;i<strlen(argv[1]);i++)
     {
-      if(argv[1][i]=='.')
-        lc=i;
+        if(argv[1][i]=='.')
+            lc=i;
     }
     if(lc>0)
-      argv[1][lc]='\0';
-    std::strcat(outp,argv[1]); std::strcat(outp,".out");
+        argv[1][lc]='\0';
+    std::strcat(outp,argv[1]);
+    std::strcat(outp,".out");
     K=atoi(argv[2]);
     input.open(inp);
     output.open(outp);
