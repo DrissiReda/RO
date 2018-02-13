@@ -13,7 +13,7 @@ int main(int argc,char* argv[])
     strsep(&argv[1],"/");
     while(true)
     {
-      for(int i=0;i<strlen(argv[1]);i++)
+      for(i=0;i<strlen(argv[1]);i++)
       { // if there is still nested folders
         if(argv[1][i]=='/')
         {
@@ -25,7 +25,7 @@ int main(int argc,char* argv[])
     }
     //remove the extension if it exists
     int lc=-1;
-    for(int i=0;i<strlen(argv[1]);i++)
+    for(i=0;i<strlen(argv[1]);i++)
     {
       if(argv[1][i]=='.')
         lc=i;

@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <cstdlib>
 ///////////////////////variables/////////////////////////////////
 char inp[255]={0},outp[255]="outclq/";
 std::ifstream input;
