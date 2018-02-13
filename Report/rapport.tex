@@ -39,7 +39,11 @@ Nous prenons un graphe $G=\{V,E\}$ tel que $V$ est l'ensemble des sommets
 et $E$ l'ensemble des arrêtes(Nous ignorons les arrêtes liant une arrête à elle même). \\
 Nous nommons les sommets du graphe 1,2, ... n. Cet algorithme permet de trouver une clique
 de taille d'au moins $k$. À chaque étape, si nous trouvons une clique de taille d'au moins
-$k$, nous arrêtons.
+$k$, nous arrêtons.\\
+Nous devons essayer chaque valeur $k$ possible, pour cela nous allons essayer de calculer la valeur
+$k$ minimale (\textbf{lower bound}) avec la formule \\
+$\forall \omega \subset $\{ensemble de toutes les cliques\} $|\omega| \geq \frac{1}{1-\delta}$
+tel que la densité est $\delta=\frac{2m}{n^2}$
 \section{Algorithme}
 \subsection{Algorithme}
 \begin{algorithm}
@@ -220,7 +224,14 @@ C(n)=O(n^2)+O(n^7)+O(n^8)
 
 \section{Implémentation en C++}
 Nous implémentons en C++ l'algorithme trouvé précédemment pour trouver la clique
-maximum d'un graphe.
+maximum d'un graphe.\\
+Nous mettons en place plusieurs mode :
+\begin{itemize}
+  \item \textbf{Verbose :} Dans ce mode, plus d'informations sont écrites sur la sortie standard.
+  \item \textbf{Fast :} Dans ce mode nous évitons de vérifier les intersections 2 à 2 de $Q_i$ et $Q_j$
+  \item \textbf{taille de clique donnée} L'information de la taille de la clique souhaitée peut être fournie, dans
+    ce cas, nous pouvons gagner beaucoup en temps d'exécution.
+\end{itemize}
 \section{Test de gestion de mémoire Valgrind ©}
 Nous allons utiliser valgrind pour un cas où l'algorithme parcours toutes ses fonctions, donc
 pour tester un cas où $k > |Q_{max}|$.\\

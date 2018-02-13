@@ -7,8 +7,9 @@ int main(int argc,char* argv[])
 {
     if(argc<2)
     {
-      std::cout << "Usage : ./clique <input> [0-1]" << std::endl;
+      std::cout << "Usage : ./clique <input> [0-1] [wanted clique size]" << std::endl;
       std::cout << "Enter 1 for deep search, or 0 for fast (default is fast)" << std::endl;
+      std::cout << "You can choose your clique size, or let the program find the max for you" << std::endl;
       return 0;
     }
     int K,k;
@@ -69,7 +70,6 @@ int main(int argc,char* argv[])
     neighbors=find_neighbors(graph);
     std::cout<<"Graph has n = "<<n<<" vertices."<<std::endl;
 //Read maximum size of Clique wanted
-    std::cout<<"Find a Clique of size at least k = "<<K<< std::endl;
     std::cout<<"Finding Cliques..."<<std::endl;
 
 //Find Cliques
@@ -80,6 +80,7 @@ int main(int argc,char* argv[])
       //init at false
       found=false;
       k=n-K;
+      std::cout<<"Find a Clique of size at least k = "<<K<< std::endl;
       //find cliques
       find_cliques(graph, k, K);
       //only for deep search

@@ -133,7 +133,6 @@ std::vector<std::vector<int> > find_neighbors(std::vector<std::vector<int> > gra
 }
 void find_cliques(std::vector<std::vector<int> > graph, int k,int K)
 {
-    std::cout << "Finding cliques.." << std::endl;
     min=n+1;
     for(int i=0; i<graph.size(); i++)
         allcurr_clique.push_back(1);
