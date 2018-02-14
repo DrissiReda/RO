@@ -3,8 +3,7 @@
 #include <set>
 #include <string.h>
 #include <map>
-#include <assert.h>
-#include "maxc.h"
+#include "maxc.hpp"
 using namespace std;
 void read_dimacs(string name, bool** &graph, int &size)
 {
@@ -47,15 +46,19 @@ void read_dimacs(string name, bool** &graph, int &size)
     cout << "|E| = " << e.size() << "  |V| = " << v.size() << " p = " << (double) e.size() / (v.size() * (v.size()) / 2) << endl;
     f.close();
 }
-void read_file(string name,bool** &graph, int &size)
+int read_file(string name,bool** &graph, int &size)
 {
   string ext=name.substr(name.find_last_of(".")+1);
   if(ext=="clq" || ext=="ls")
-    return read_dimacs(name,graph,size);
-  else//adjmat format
+  {
+    read_dimacs(name,graph,size);
+    return 0;
+  }
+  else if(ext=="mat")//adjmat format
   {
     ifstream in(name.c_str());
-    in >> size;
+    int esize;
+    in >> size >> esize;
     string s;
     graph = new bool*[size];
     getline(in,s);
@@ -68,16 +71,32 @@ void read_file(string name,bool** &graph, int &size)
       for(int j=0;j<size;j++)
         in >> graph[i][j];
     in.close();
+    cout << "|E| = " << esize << "  |V| = " << size << " p = " << (double) esize / (size * size / 2) << endl;
+    cout << "first elements are ";
+    for(int i=0;i<5;i++)
+      cout<<graph[0][i]<<" ";
+    cout << endl;
+    return 0;
   }
+  else
+    return -1;
 }
 
 int main(int argc, char *argv[])
 {
-    assert(argc == 2);
+    if ( argc<2)
+    {
+      cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
+      return -1;
+    }
     cout << "args = " << argv[1] << endl;
     bool **graph;
     int size, *qmax, qsize;
-    read_file(argv[1], graph, size);
+    if(read_file(argv[1], graph, size)<0)
+    {
+      cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
+      return -1;
+    }
     Maxclique mc(graph, size, 0.025);
     mc.maxc(qmax, qsize);
     cout << "Clique Max: ";

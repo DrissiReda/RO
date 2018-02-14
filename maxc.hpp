@@ -297,7 +297,7 @@ void Maxclique::expand(Vertices R)
             }
             else if (Q.size() > QMAX.size())
             {
-                std::cout << "etape = " << pk << " taille de clique max = " << Q.size() << std::endl;
+                std::cout << "etape n = " << pk << " taille de clique max = " << Q.size() << std::endl;
                 QMAX = Q;
             }
             Rp.dispose();
@@ -336,7 +336,7 @@ void Maxclique::expand_rec(Vertices R)
             }
             else if (Q.size() > QMAX.size())
             {
-                std::cout << "etape = " << pk << " taille de clique max= " << Q.size() << std::endl;
+                std::cout << "etape n = " << pk << " taille de clique max= " << Q.size() << std::endl;
                 QMAX = Q;
             }
             Rp.dispose();

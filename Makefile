@@ -13,4 +13,6 @@ verbose:
 	$(CXX) $(CXXFLAGS) $(OPTS) $(SRC) -o $(EXEC)
 	pdflatex Report/rapport.tex
 conv:
-	$(CXX) edgtoadj.cpp -o edgtoadj
+	$(CXX) $(CXXFLAGS) edgtoadj.cpp -o edgtoadj
+max:
+	$(CXX) $(CXXFLAGS) maxc.cpp -o maxc
