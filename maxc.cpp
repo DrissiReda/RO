@@ -6,17 +6,17 @@
 #include <assert.h>
 #include "maxc.h"
 using namespace std;
-void read_dimacs(string name, bool** &conn, int &size)
+void read_dimacs(string name, bool** &graph, int &size)
 {
     ifstream f (name.c_str());
     string buffer;
     assert(f.is_open());
     set<int> v;
-    bool isls=true;
+    bool isls=false;
     multimap<int,int> e;
     getline(f,buffer);
-    if(buffer[0]=='c' || buffer[0]=='p')
-      isls=false;
+    if(name.substr(name.find_last_of(".")+1)=="ls")
+      isls=true;
     while (!getline(f, buffer).eof())
     {
         int vi, vj;
@@ -33,41 +33,62 @@ void read_dimacs(string name, bool** &conn, int &size)
         }
     }
     size = *v.rbegin() + 1;
-    conn = new bool*[size];
+    graph = new bool*[size];
     for (int i=0; i < size; i++)
     {
-        conn[i] = new bool[size];
-        memset(conn[i], 0, size * sizeof(bool));
+        graph[i] = new bool[size];
+        memset(graph[i], 0, size * sizeof(bool));
     }
     for (multimap<int,int>::iterator it = e.begin(); it != e.end(); it++)
     {
-        conn[it->first][it->second] = true;
-        conn[it->second][it->first] = true;
+        graph[it->first][it->second] = true;
+        graph[it->second][it->first] = true;
     }
     cout << "|E| = " << e.size() << "  |V| = " << v.size() << " p = " << (double) e.size() / (v.size() * (v.size()) / 2) << endl;
     f.close();
 }
+void read_file(string name,bool** &graph, int &size)
+{
+  string ext=name.substr(name.find_last_of(".")+1);
+  if(ext=="clq" || ext=="ls")
+    return read_dimacs(name,graph,size);
+  else//adjmat format
+  {
+    ifstream in(name.c_str());
+    in >> size;
+    string s;
+    graph = new bool*[size];
+    getline(in,s);
+    for(int i=0;i<size;i++)
+    {
+      graph[i]=new bool[size];
+      memset(graph[i],0,size*sizeof(bool));
+    }
+    for(int i=0;i<size;i++)
+      for(int j=0;j<size;j++)
+        in >> graph[i][j];
+    in.close();
+  }
+}
+
 int main(int argc, char *argv[])
 {
     assert(argc == 2);
     cout << "args = " << argv[1] << endl;
-    bool **conn;
+    bool **graph;
     int size, *qmax, qsize;
-    read_dimacs(argv[1], conn, size);
-    cout << "max clique with improved coloring and dynamic sorting of vertices"<<endl;
-    Maxclique md(conn, size, 0.025);  //(3rd parameter is optional - default is 0.025 - this heuristics parameter enables you to use dynamic resorting of vertices (time expensive)
-    // on the part of the search tree that is close to the root - in this case, approximately 2.5% of the search tree -
-    // you can probably find a more optimal value for your graphs
-    md.mcqdyn(qmax, qsize);  // run max clique with improved coloring and dynamic sorting of vertices
-    cout << "Maximum clique: ";
+    read_file(argv[1], graph, size);
+    Maxclique mc(graph, size, 0.025);
+    mc.maxc(qmax, qsize);
+    cout << "Clique Max: ";
     for (int i = 0; i < qsize; i++)
         cout << qmax[i] << " ";
     cout << endl;
-    cout << "Size = " << qsize << endl;
-    cout << "Number of steps = " << md.steps() << endl;
+    cout << "Taille = " << qsize << endl;
+    cout << "Nombre d'etapes = " << mc.steps() << endl;
     delete [] qmax;
     for (int i=0; i<size; i++)
-        delete [] conn[i];
-    delete [] conn;
+        delete [] graph[i];
+    delete [] graph;
     return 0;
 }

@@ -1,0 +1,158 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\hypersetup{
+    colorlinks=true,
+    linkbordercolor = {white},
+    linkcolor=black,
+    urlcolor=cyan
+}
+\title{\Huge Problème de clique maximum}
+
+\author{\texttt{reda-mohamed.drissi@isty.uvsq.fr}\\
+        Drissi Mohamed Reda}
+\date{19 Fevrier 2018}
+\begin{document}
+\makeatletter
+    \begin{titlepage}
+        \begin{center}
+        	\includegraphics[width=40mm]{Report/uvsq-header.png}\par \vspace{1cm}
+            {\@title }\\[4ex]
+            {\@author}\\[4ex]
+            {\@date} \\ [4ex]
+        \end{center}
+    \end{titlepage}
+\makeatother
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+Après avoir testé plusieurs algorithmes (glouton, Bron-Kerbosch, branch and bound), il parait que
+l'algorithme Clique\_Max (trouvé sur wikipedia) en utilisant la coloration du graphe,
+soit le plus rapide, (du moins au moment de l'implémentation).\\
+Le but est d'utiliser l'algorithme approximé de coloration de graphes pour determiner une borne,
+ce qui facilite la recherche d'une clique maximum.
+\section{Théorie}
+Soit un graphe $G=(V,E)$ tel que $V=\{1,2,3,4..,n\}$. Pour chaque sommet $v \in V$, $\Gamma(v)$
+est l'ensemble de tous les voisins de $v$ donc deg$(v)=|\Gamma(v)|$.\\
+Soit $G(R)=G(R,E\cap R\times R)$ le sous-graphe de $G$ comprenant tous les éléments de $R$, tel que
+$R \subset V$.
+\subsection{Algorithme De Coloration De graphe}
+$Q$ est l'ensemble des sommets de la clique qui est actuellement construite, $Q_{max}$
+est l'ensemble des sommets de la plus grande clique trouvée jusqu'à maintenant.\\
+L'algorithme insère chaque sommet $v$ dans la première classe $C_k$ de couleur possible, si aucune
+classe n'est possible, nous créons une nouvelle classe $C_{max\_no+1}$ puis nous y insérons $v$.\\
+Pour notre cas nous remarquons que les sommets $ v \in R$ ayant une couleur $C(v) < |Q_{max}|-|Q|+1$
+ne vont jamais être rajoutées à la clique actuelle ($Q$), donc nous calculons cette valeur
+$k_{min}=|Q_{max}|-|Q|+1$ au début de l'itération, et nous initialisons le compteur de ces sommets à
+$j \gets 0$.\\
+Quand un sommet $v=R[i]$ est attribué à une classe $C_k$ et que $k<k_{min}$ nous décalons ce sommet
+vers la position $j$, $R[j] \gets R[i]$, puis nous incrémentons $j$. \\
+Une fois tous les sommets ont été attribués à une couleur, les sommets ayant $k<k_{min}$ sont au début
+de $R$. Les autres sommets tel que $k \geq k_{min}$ sont copiés depuis les classes de couleurs $C_k$
+vers $R$ dans un ordre croissant de $k$. Uniquement à ces sommets sont attribués des couleurs $C(v)=k$.
+
+\begin{algorithm}
+\begin{algorithmic}
+\Procedure{Coloration}{R,C}
+  \State max\_no $\gets$ 1
+  \State $k_{min}$ $\gets$ $|Q_{max}| - |Q|+1$
+  \If{$k_{min} \leq 0$}
+    \State $k_{min} \gets 1$
+  \EndIf
+  \State $j \gets 0$
+  \State $C_1 \gets \emptyset$ $C_2 \gets \emptyset$
+  \For{$ i \in [1,|R|-1]$}
+    \State $p \gets R[i]$
+    \State $k \gets 1$
+    \While{$C_k \cap \Gamma(p) \neq \emptyset$}
+      \State $k \gets k+1$
+    \EndWhile
+    \If{$k >$ max\_no}
+      \State max\_no $\gets k$
+      \State $C_{max\_no+1} \gets \emptyset $
+    \EndIf
+    \State $C_k \gets C_k \cup \{p\}$
+    \If{$k < k_{min}$}
+      \State $R[j] \gets R[i]$
+      \State $j \gets j+1$
+    \EndIf
+  \EndFor
+  \State $C[j-1] \gets 0$
+  \For{$k \in [k_{min}$,max\_no]}
+    \For{$i \in [1,|C_k|]$}
+      \State $R[j] \gets C_k[i]$
+      \State $C[j] \gets k$
+      \State $j \gets j+1$
+    \EndFor
+  \EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\subsection{Trouver la clique max}
+Nous initialisons :
+\begin{itemize}
+  \item $Q \gets \emptyset$
+  \item $Q_{max} \gets \emptyset$
+  \item ALLSTP $\gets 1$
+  \item Tous les éléments de $S$ et $S_{old}$ sont initialisés à 0
+\end{itemize}
+Trier les sommets de $R$ selon leur degrés nous permet de gagner en performance en théorie, puisque
+cela permet d'avoir une borne supérieure moins grande, et nous permet de réduire le nombre d'étapes
+au minimum mais puisque cela prend un temps $O(|R|^2)$, nous ne gagnons en performance que quand
+$R$ est assez large, donc uniquement dans les premières étapes.\\
+En utilisant $lv$ nous comptons le nombre d'appels récursifs depuis la racine jusqu'à la feuille
+actuelle. \\
+Le nombre d'étapes max où nous n'allons pas trier $R$ doit être determiné dynamiquement, car la densité
+est un plus grand facteur que la taille du graphe, dans la taille de la clique max.\\
+Les variables $S[lv]$ et $S_{old}[lv]$ sont des variables globales qui nous permettrons de compter
+le nombre d'étapes. La variable ALLSTP calcule le nombre d'étapes maximales.\\
+À chaque étape nous calculons $S[lv]/$ALLSTP et nous le comparons à $T_{limit}$ qui est un paramètre
+choisi en testant differents graphes, et en regardant sur internet. \\
+Quand $S[lv]/$ALLSTP$ \geq T_{limit}$ nous ne trions pas $R$.\\
+À chaque itération la fonction mets à jour $S$ et $S_{old}$ avec
+\begin{displaymath}
+  S[lv] \gets S[lv] + S[lv-1] -S_{old}[lv]
+  S_{old}[lv]\gets S[lv-1]
+\end{displaymath}
+\begin{algorithm}
+\caption{Clique\_Max(R,C,lv)}
+\begin{algorithmic}
+\Procedure{Clique\_Max}{R,C,lv}
+  \State $S[lv] \gets S[lv] + S[lv-1] -S_{old}[lv]$
+  \State $S_{old}[lv]\gets S[lv-1]$
+  \While{$R\neq\emptyset$}
+    \State Choisir un sommet $p$ ayant $C(p)$ max (dernier sommet) dans $R$
+    \State $R \gets R \setminus \{p\}$
+    \If{$|Q| +C$[index de $p$ dans $R$] $>$ $|Q_{max}|$}
+      \State $Q \gets Q \cup \{p\}$
+      \If{$R \cap \Gamma(p) \neq \emptyset$}
+        \If{$S[lv]$/ALLSTP $<$ $T_{limit}$}
+          \State Calculer le degré des sommets de G($R \cap \Gamma(p)$)
+          \State Trier les sommets de $R \cap \Gamma(p)$ par ordre décroissant
+          \State (selon leurs degrés)
+        \EndIf
+        \State \Call{Coloration}{$R \cap \Gamma(p)$,C'}
+        \State $S[lv] \gets S[lv]+1$
+        \State ALLSTP $\gets$ ALLSTP +1
+        \State  \Call {Clique\_Max}{$R \cap \Gamma(p)$,C',lv+1}
+      \ElsIf{$|Q| > |Q_{max}| $}
+        $Q_{max} \gets Q$
+      \EndIf
+      \State $Q \gets Q\setminus \{p\}$
+    \Else
+      \State return
+    \EndIf
+  \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\end{document}

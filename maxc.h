@@ -3,13 +3,10 @@
 #include <iostream>
 #include <algorithm>
 #include <assert.h>
-#ifdef DBG
-using namespace std;
-#endif
 class Maxclique
 {
     const bool* const* e;
-    int pk, level;
+    int pk, lv;
     const float Tlimit;
     class Vertices
     {
@@ -152,7 +149,7 @@ class Maxclique
         }
     };
     StepCount *S;
-    bool connection(const int i, const int j) const
+    bool isadjacent(const int i, const int j) const
     {
         return e[i][j];
     }
@@ -160,22 +157,18 @@ class Maxclique
     void cut2(const Vertices&, Vertices&);
     void color_sort(Vertices&);
     void expand(Vertices);
-    void expand_dyn(Vertices);
-    void _mcq(int*&, int&, bool);
+    void expand_rec(Vertices);
     void degree_sort(Vertices &R)
     {
         R.set_degrees(*this);
         R.sort();
     }
 public:
+    void maxc(int*&, int&);
     Maxclique(const bool* const*, const int, const float=0.025);
     int steps() const
     {
         return pk;
-    }
-    void mcqdyn(int* &maxclique, int &sz)
-    {
-        _mcq(maxclique, sz, true);
     }
     ~Maxclique()
     {
@@ -185,32 +178,28 @@ public:
     };
 };
 
-Maxclique::Maxclique (const bool* const* conn, const int sz, const float tt) : pk(0), level(1), Tlimit(tt), V(sz), Q(sz), QMAX(sz)
+Maxclique::Maxclique (const bool* const* graph, const int sz, const float tt) : pk(0), lv(1), Tlimit(tt), V(sz), Q(sz), QMAX(sz)
 {
-    assert(conn!=0 && sz>0);
+    assert(graph!=0 && sz>0);
     for (int i=0; i < sz; i++) V.push(i);
-    e = conn;
+    e = graph;
     C = new ColorClass[sz + 1];
     for (int i=0; i < sz + 1; i++) C[i].init(sz + 1);
     S = new StepCount[sz + 1];
 }
 
-void Maxclique::_mcq(int* &maxclique, int &sz, bool dyn)
+void Maxclique::maxc(int* &maxclique, int &sz)
 {
     V.set_degrees(*this);
     V.sort();
     V.init_colors();
-    if (dyn)
+
+    for (int i=0; i < V.size() + 1; i++)
     {
-        for (int i=0; i < V.size() + 1; i++)
-        {
-            S[i].set_i1(0);
-            S[i].set_i2(0);
-        }
-        expand_dyn(V);
+        S[i].set_i1(0);
+        S[i].set_i2(0);
     }
-    else
-        expand(V);
+    expand_rec(V);
     maxclique = new int[QMAX.size()];
     for (int i=0; i<QMAX.size(); i++)
     {
@@ -234,7 +223,7 @@ void Maxclique::Vertices::set_degrees(Maxclique &m)
     {
         int d = 0;
         for (int j=0; j < sz; j++)
-            if (m.connection(v[i].get_i(), v[j].get_i())) d++;
+            if (m.isadjacent(v[i].get_i(), v[j].get_i())) d++;
         v[i].set_degree(d);
     }
 }
@@ -242,7 +231,7 @@ void Maxclique::Vertices::set_degrees(Maxclique &m)
 bool Maxclique::cut1(const int pi, const ColorClass &A)
 {
     for (int i = 0; i < A.size(); i++)
-        if (connection(pi, A.at(i)))
+        if (isadjacent(pi, A.at(i)))
             return true;
     return false;
 }
@@ -251,7 +240,7 @@ void Maxclique::cut2(const Vertices &A, Vertices &B)
 {
     for (int i = 0; i < A.size() - 1; i++)
     {
-        if (connection(A.end().get_i(), A.at(i).get_i()))
+        if (isadjacent(A.end().get_i(), A.at(i).get_i()))
             B.push(A.at(i).get_i());
     }
 }
@@ -308,7 +297,7 @@ void Maxclique::expand(Vertices R)
             }
             else if (Q.size() > QMAX.size())
             {
-                std::cout << "step = " << pk << " current max. clique size = " << Q.size() << std::endl;
+                std::cout << "etape = " << pk << " taille de clique max = " << Q.size() << std::endl;
                 QMAX = Q;
             }
             Rp.dispose();
@@ -322,10 +311,10 @@ void Maxclique::expand(Vertices R)
     }
 }
 
-void Maxclique::expand_dyn(Vertices R)
+void Maxclique::expand_rec(Vertices R)
 {
-    S[level].set_i1(S[level].get_i1() + S[level - 1].get_i1() - S[level].get_i2());
-    S[level].set_i2(S[level - 1].get_i1());
+    S[lv].set_i1(S[lv].get_i1() + S[lv - 1].get_i1() - S[lv].get_i2());
+    S[lv].set_i2(S[lv - 1].get_i1());
     while (R.size())
     {
         if (Q.size() + R.end().get_degree() > QMAX.size())
@@ -335,19 +324,19 @@ void Maxclique::expand_dyn(Vertices R)
             cut2(R, Rp);
             if (Rp.size())
             {
-                if ((float)S[level].get_i1()/++pk < Tlimit)
+                if ((float)S[lv].get_i1()/++pk < Tlimit)
                 {
                     degree_sort(Rp);
                 }
                 color_sort(Rp);
-                S[level].inc_i1();
-                level++;
-                expand_dyn(Rp);
-                level--;
+                S[lv].inc_i1();
+                lv++;
+                expand_rec(Rp);
+                lv--;
             }
             else if (Q.size() > QMAX.size())
             {
-                std::cout << "step = " << pk << " current max. clique size = " << Q.size() << std::endl;
+                std::cout << "etape = " << pk << " taille de clique max= " << Q.size() << std::endl;
                 QMAX = Q;
             }
             Rp.dispose();
