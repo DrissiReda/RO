@@ -457,5 +457,73 @@ Temps d'exécution
   user	0m13.628s
   sys	  0m0.004s
 \end{verbatim}
-
+\begin{algorithm}
+\begin{algorithmic}
+\Procedure{ColorSort}{R,C}
+  \State max\_no $\gets$ 1
+  \State $k_{min}$ $\gets$ $|Q_{max}| - |Q|+1$
+  \If{$k_{min} \leq 0$}
+    \State $k_{min} \gets 1$
+  \EndIf
+  \State $j \gets 0$
+  \State $C_1 \gets \emptyset$ $C_2 \gets \emptyset$
+  \For{$ i \in [1,|R|-1]$}
+    \State $p \gets R[i]$
+    \State $k \gets 1$
+    \While{$C_k \cap \Gamma(p) \neq \emptyset$}
+      \State $k \gets k+1$
+    \EndWhile
+    \If{$k >$ max\_no}
+      \State max\_no $\gets k$
+      \State $C_{max\_no+1} \gets \emptyset $
+    \EndIf
+    \State $C_k \gets C_k \cup \{p\}$
+    \If{$k < k_{min}$}
+      \State $R[j] \gets R[i]$
+      \State $j \gets j+1$
+    \EndIf
+  \EndFor
+  \State $C[j-1] \gets 0$
+  \For{$k \in [k_{min}$,max\_no]}
+    \For{$i \in [1,|C_k|]$}
+      \State $R[j] \gets C_k[i]$
+      \State $C[j] \gets k$
+      \State $j \gets j+1$
+    \EndFor
+  \EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+\begin{algorithm}
+\caption{MaxCliqueDyn(R,C,lv)}
+\begin{algorithmic}
+\Procedure{MaxCliqueDyn}{R,C,lv}
+  \State $S[lv] \gets S[lv] + S[lv-1] -S_{old}[lv]$
+  \State $S_{old}[lv]\gets S[lv-1]$
+  \While{$R\neq\emptyset$}
+    \State Choisir un sommet $p$ ayant $C(p)$ max (dernier sommet) dans $R$
+    \State $R \gets R \setminus \{p\}$
+    \If{$|Q| +C$[index de $p$ dans $R$] > $|Q_{max}|$}
+      \State $Q \gets Q \cup \{p\}$
+      \If{$R \cap \Gamma(p) \neq \emptyset$}
+        \If{$S[lv]$/ALLSTP < $T_{limit}$}
+          \State Calculer le degré des sommets de G($R \cap \Gamma(p)$)
+          \State Trier les sommets de $R \cap \Gamma(p)$ par ordre décroissant
+          \State (selon leurs degrés)
+        \EndIf
+        \State \Call{ColorSort}{$R \cap \Gamma(p)$,C'}
+        \State $S[lv] \gets S[lv]+1$
+        \State ALLSTP $\gets$ ALLSTP +1
+        \State  \Call {MaxCliqueDyn}{$R \cap \Gamma(p)$,C',lv+1}
+      \ElsIf{$|Q| > |Q_{max}| $}
+        $Q_{max} \gets Q$
+      \EndIf
+      \State $Q \gets Q\setminus \{p\}$
+    \Else
+      \State return
+    \EndIf
+  \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 \end{document}
