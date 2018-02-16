@@ -1,18 +1,10 @@
 CXX=g++
-OPTS= -DVERBOSE
 CXXFLAGS= -g -O3
-EXEC=clique
-SRC=clique.cpp
+EXEC=maxc
+SRC=maxc.cpp
 default:
-	#@mkdir edgls adjmat outclq
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(EXEC)
-	$(CXX) $(CXXFLAGS) maxc.cpp -o maxc
-	pdflatex Report/rapport.tex 
-verbose:
-	#@mkdir edgls adjmat outclq
-	$(CXX) $(CXXFLAGS) $(OPTS) $(SRC) -o $(EXEC)
-	pdflatex Report/rapport.tex
-conv:
-	$(CXX) $(CXXFLAGS) edgtoadj.cpp -o edgtoadj
-max:
-	$(CXX) $(CXXFLAGS) maxc.cpp -o maxc
+	pdflatex report.tex
+	mkdir edgls adjmat outclq
+report:
+	pdflatex report.tex
