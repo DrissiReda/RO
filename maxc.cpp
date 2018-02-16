@@ -15,20 +15,20 @@ void read_dimacs(string name, bool** &graph, int &size)
     multimap<int,int> e;
     getline(f,buffer);
     if(name.substr(name.find_last_of(".")+1)=="ls")
-      isls=true;
+        isls=true;
     while (!getline(f, buffer).eof())
     {
         int vi, vj;
         //either a list or a .clq starting with e
         if(isls ^ buffer[0]=='e')
         {
-          if(isls)
-            sscanf(buffer.c_str(), "%d %d", &vi, &vj);
-          else
-            sscanf(buffer.c_str(), "%*c %d %d", &vi, &vj);
-          v.insert(vi);
-          v.insert(vj);
-          e.insert(make_pair(vi, vj));
+            if(isls)
+                sscanf(buffer.c_str(), "%d %d", &vi, &vj);
+            else
+                sscanf(buffer.c_str(), "%*c %d %d", &vi, &vj);
+            v.insert(vi);
+            v.insert(vj);
+            e.insert(make_pair(vi, vj));
         }
     }
     size = *v.rbegin() + 1;
@@ -48,54 +48,50 @@ void read_dimacs(string name, bool** &graph, int &size)
 }
 int read_file(string name,bool** &graph, int &size)
 {
-  string ext=name.substr(name.find_last_of(".")+1);
-  if(ext=="clq" || ext=="ls")
-  {
-    read_dimacs(name,graph,size);
-    return 0;
-  }
-  else if(ext=="mat")//adjmat format
-  {
-    ifstream in(name.c_str());
-    int esize;
-    in >> size >> esize;
-    string s;
-    graph = new bool*[size];
-    getline(in,s);
-    for(int i=0;i<size;i++)
+    string ext=name.substr(name.find_last_of(".")+1);
+    if(ext=="clq" || ext=="ls")
     {
-      graph[i]=new bool[size];
-      memset(graph[i],0,size*sizeof(bool));
+        read_dimacs(name,graph,size);
+        return 0;
     }
-    for(int i=0;i<size;i++)
-      for(int j=0;j<size;j++)
-        in >> graph[i][j];
-    in.close();
-    cout << "|E| = " << esize << "  |V| = " << size << " p = " << (double) esize / (size * size / 2) << endl;
-    cout << "first elements are ";
-    for(int i=0;i<5;i++)
-      cout<<graph[0][i]<<" ";
-    cout << endl;
-    return 0;
-  }
-  else
-    return -1;
+    else if(ext=="mat")//adjmat format
+    {
+        ifstream in(name.c_str());
+        int esize;
+        in >> size >> esize;
+        string s;
+        graph = new bool*[size];
+        getline(in,s);
+        for(int i=0; i<size; i++)
+        {
+            graph[i]=new bool[size];
+            memset(graph[i],0,size*sizeof(bool));
+        }
+        for(int i=0; i<size; i++)
+            for(int j=0; j<size; j++)
+                in >> graph[i][j];
+        in.close();
+        cout << "|E| = " << esize << "  |V| = " << size << " p = " << (double) esize / (size * size / 2) << endl;
+        return 0;
+    }
+    else
+        return -1;
 }
 
 int main(int argc, char *argv[])
 {
     if ( argc<2)
     {
-      cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
-      return -1;
+        cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
+        return -1;
     }
     cout << "args = " << argv[1] << endl;
     bool **graph;
     int size, *qmax, qsize;
     if(read_file(argv[1], graph, size)<0)
     {
-      cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
-      return -1;
+        cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
+        return -1;
     }
     Maxclique mc(graph, size, 0.025);
     mc.maxc(qmax, qsize);
