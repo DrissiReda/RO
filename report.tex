@@ -155,4 +155,189 @@ Quand $S[lv]/$ALLSTP$ \geq T_{limit}$ nous ne trions pas $R$.\\
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+\section{Implémentation en C++}
+Pour compiler le projet nous pouvons utiliser le \texttt{Makefile}.\\
+Puis pour exécuter nous pouvons suivre le format :
+\begin{verbatim}
+  ./maxc <fichier.ls|.mat|.clq>
+\end{verbatim}
+\section{Test de performance à l'aide de \href{http://www.valgrind.org/}{Valgrind ©}}
+Nous allons tester notre programme avec plusieurs instances de \href{https://turing.cs.hbg.psu.edu/txn131/clique.html}{DIMAC}.\\
+\paragraph{brock200\_1}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/brock200_1.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/brock200_1.clq
+  |E| = 14834  |V| = 200 p = 0.7417
+  etape n = 0 taille de clique max= 1
+  etape n = 13 taille de clique max= 14
+  etape n = 19 taille de clique max= 15
+  etape n = 68 taille de clique max= 16
+  etape n = 147 taille de clique max= 17
+  etape n = 625 taille de clique max= 18
+  etape n = 2675 taille de clique max= 19
+  etape n = 11253 taille de clique max= 20
+  etape n = 57248 taille de clique max= 21
+  Clique Max: 134 102 85 39 150 92 136 68 186 178 135 94 90 93 20 18 73 87 81 142 108
+  Taille = 21
+  Nombre d'etapes = 232999
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+    real  0m0.410s
+    user  0m0.400s
+    sys   0m0.000s
+\end{verbatim}
+\paragraph{brock200\_2}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/brock200_2.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/brock200_2.clq
+  |E| = 9876  |V| = 200 p = 0.4938
+  etape n = 0 taille de clique max= 1
+  etape n = 5 taille de clique max= 6
+  etape n = 9 taille de clique max= 7
+  etape n = 14 taille de clique max= 8
+  etape n = 40 taille de clique max= 9
+  etape n = 1166 taille de clique max= 10
+  etape n = 1566 taille de clique max= 12
+  Clique Max: 135 158 145 105 121 27 55 183 70 48 149 120
+  Taille = 12
+  Nombre d'etapes = 3606
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  0m0.033s
+  user  0m0.020s
+  sys   0m0.000s
+\end{verbatim}
+
+\paragraph{brock400\_2}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/brock400_2.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/brock400_2.clq
+  |E| = 59786  |V| = 400 p = 0.747325
+  etape n = 0 taille de clique max= 1
+  etape n = 17 taille de clique max= 18
+  etape n = 29 taille de clique max= 19
+  etape n = 184 taille de clique max= 20
+  etape n = 3604 taille de clique max= 21
+  etape n = 87268 taille de clique max= 22
+  etape n = 665019 taille de clique max= 23
+  etape n = 10259821 taille de clique max= 24
+  etape n = 20022091 taille de clique max= 29
+  Clique Max: 388 252 20 39 92 142 276 178 68 380 134 73 348 93 234 260 150 365 262 207 221 135
+  18 304 90 108 311 85 186
+  Taille = 29
+  Nombre d'etapes = 44365961
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  1m55.945s
+  user  1m55.936s
+  sys   0m0.000s
+\end{verbatim}
+\paragraph{brock400\_4}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/brock400_4.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/brock400_4.clq
+  |E| = 59765  |V| = 400 p = 0.747062
+  etape n = 0 taille de clique max= 1
+  etape n = 15 taille de clique max= 16
+  etape n = 20 taille de clique max= 17
+  etape n = 54 taille de clique max= 18
+  etape n = 104 taille de clique max= 19
+  etape n = 199 taille de clique max= 20
+  etape n = 309 taille de clique max= 21
+  etape n = 24492 taille de clique max= 22
+  etape n = 162628 taille de clique max= 23
+  etape n = 1528510 taille de clique max= 24
+  etape n = 1589415 taille de clique max= 25
+  etape n = 50859228 taille de clique max= 26
+  etape n = 51039931 taille de clique max= 33
+  Clique Max: 161 362 353 294 266 157 393 135 241 324 17 7 343 270 202 112 267 380 389
+  197 396 394 211 340 147 334 245 186 154 247 8 19 242
+  Taille = 33
+  Nombre d'etapes = 54362635
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  2m1.055s
+  user  2m0.996s
+  sys   0m0.004s
+\end{verbatim}
+Nous faisons tourner ce dernier \texttt{brock800\_2} avec Valgrind
+\paragraph{brock800\_2}
+Commande :
+\begin{verbatim}
+  valgrind ./maxc bingraph/brock800_2.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+
+\end{verbatim}
+\paragraph{keller4}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/keller4.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/keller4.clq
+  |E| = 9435  |V| = 171 p = 0.645349
+  etape n = 0 taille de clique max= 1
+  etape n = 10 taille de clique max= 11
+  Clique Max: 130 162 48 152 65 44 49 138 68 135 147
+  Taille = 11
+  Nombre d'etapes = 8586
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  0m0.014s
+  user  0m0.012s
+  sys   0m0.000s
+\end{verbatim}
+\paragraph{hamming8-4}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/hamming8-4.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/hamming8-4.clq
+  |E| = 20864  |V| = 256 p = 0.636719
+  etape n = 0 taille de clique max= 1
+  etape n = 11 taille de clique max= 12
+  etape n = 30 taille de clique max= 13
+  etape n = 316 taille de clique max= 16
+  Clique Max: 95 162 139 212 60 183 45 158 197 240 99 118 17 8 249 74
+  Taille = 16
+  Nombre d'etapes = 11293
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  0m0.041s
+  user  0m0.032s
+  sys   0m0.000s
+
+\end{verbatim}
+
 \end{document}
