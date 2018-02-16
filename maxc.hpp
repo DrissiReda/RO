@@ -3,73 +3,73 @@
 #include <iostream>
 #include <algorithm>
 #include <assert.h>
-class Maxclique
+class Qmax
 {
-    const bool* const* e;
+    const bool* const* edgls;
     int pk, lv;
     const float Tlimit;
-    class Vertices
+    class Vtxs
     {
-        class Vertex
+        class Vtx
         {
             int i, d;
         public:
-            void set_i(const int ii)
+            void setI(const int i)
             {
-                i = ii;
+                this->i = i;
             }
-            int get_i() const
+            int getI() const
             {
                 return i;
             }
-            void set_degree(int dd)
+            void setDeg(int d)
             {
-                d = dd;
+                this->d = d;
             }
-            int get_degree() const
+            int getDeg() const
             {
                 return d;
             }
         };
-        Vertex *v;
+        Vtx *v;
         int sz;
-        static bool desc_degree(const Vertex vi, const Vertex vj)
+        static bool descDeg(const Vtx vi, const Vtx vj)
         {
-            return (vi.get_degree() > vj.get_degree());
+            return (vi.getDeg() > vj.getDeg());
         }
     public:
-        Vertices(int size) : sz(0)
+        Vtxs(int size) : sz(0)
         {
-            v = new Vertex[size];
+            v = new Vtx[size];
         }
-        ~Vertices () {}
+        ~Vtxs () {}
         void dispose()
         {
             if (v) delete [] v;
         }
         void sort()
         {
-            std::sort(v, v+sz, desc_degree);
+            std::sort(v, v+sz, descDeg);
         }
-        void init_colors();
-        void set_degrees(Maxclique&);
+        void initCol();
+        void setDegs(Qmax&);
         int size() const
         {
             return sz;
         }
-        void push(const int ii)
+        void push(const int i)
         {
-            v[sz++].set_i(ii);
+            v[sz++].setI(i);
         };
         void pop()
         {
             sz--;
         };
-        Vertex& at(const int ii) const
+        Vtx& at(const int i) const
         {
-            return v[ii];
+            return v[i];
         };
-        Vertex& end() const
+        Vtx& end() const
         {
             return v[sz - 1];
         };
@@ -93,9 +93,9 @@ class Maxclique
             i = new int[sz];
             rewind();
         }
-        void push(const int ii)
+        void push(const int i)
         {
-            i[sz++] = ii;
+            this->i[sz++] = i;
         };
         void pop()
         {
@@ -109,9 +109,9 @@ class Maxclique
         {
             return sz;
         }
-        int& at(const int ii) const
+        int& at(const int i) const
         {
-            return i[ii];
+            return this->i[i];
         }
         ColorClass& operator=(const ColorClass& dh)
         {
@@ -120,57 +120,57 @@ class Maxclique
             return *this;
         }
     };
-    Vertices V;
-    ColorClass *C, QMAX, Q;
-    class StepCount
+    Vtxs V;
+    ColorClass *C, _QMAX, Q;
+    class StpCnt
     {
-        int i1, i2;
+        int i, j;
     public:
-        StepCount() : i1(0), i2(0) {}
-        void set_i1(const int ii)
+        StpCnt() : i(0), j(0) {}
+        void setI(const int i)
         {
-            i1 = ii;
+            this->i = i;
         }
-        int get_i1() const
+        int getI() const
         {
-            return i1;
+            return i;
         }
-        void set_i2(const int ii)
+        void setJ(const int j)
         {
-            i2 = ii;
+            this->j = j;
         }
-        int get_i2() const
+        int getJ() const
         {
-            return i2;
+            return j;
         }
-        void inc_i1()
+        void incI()
         {
-            i1++;
+            i++;
         }
     };
-    StepCount *S;
+    StpCnt *S;
     bool isadjacent(const int i, const int j) const
     {
-        return e[i][j];
+        return edgls[i][j];
     }
-    bool cut1(const int, const ColorClass&);
-    void cut2(const Vertices&, Vertices&);
-    void color_sort(Vertices&);
-    void expand(Vertices);
-    void expand_rec(Vertices);
-    void degree_sort(Vertices &R)
+    bool cuttable(const int, const ColorClass&);
+    void cut(const Vtxs&, Vtxs&);
+    void coloration(Vtxs&);
+    void expand(Vtxs);
+    void recursiveExpand(Vtxs);
+    void degSort(Vtxs &R)
     {
-        R.set_degrees(*this);
+        R.setDegs(*this);
         R.sort();
     }
 public:
     void maxc(int*&, int&);
-    Maxclique(const bool* const*, const int, const float=0.025);
+    Qmax(const bool* const*, const int, const float=0.025);
     int steps() const
     {
         return pk;
     }
-    ~Maxclique()
+    ~Qmax()
     {
         if (C) delete [] C;
         if (S) delete [] S;
@@ -178,57 +178,57 @@ public:
     };
 };
 
-Maxclique::Maxclique (const bool* const* graph, const int sz, const float tt) : pk(0), lv(1), Tlimit(tt), V(sz), Q(sz), QMAX(sz)
+Qmax::Qmax (const bool* const* graph, const int sz, const float tt) : pk(0), lv(1), Tlimit(tt), V(sz), Q(sz), _QMAX(sz)
 {
     assert(graph!=0 && sz>0);
     for (int i=0; i < sz; i++) V.push(i);
-    e = graph;
+    edgls = graph;
     C = new ColorClass[sz + 1];
     for (int i=0; i < sz + 1; i++) C[i].init(sz + 1);
-    S = new StepCount[sz + 1];
+    S = new StpCnt[sz + 1];
 }
 
-void Maxclique::maxc(int* &maxclique, int &sz)
+void Qmax::maxc(int* &Qmax, int &sz)
 {
-    V.set_degrees(*this);
+    V.setDegs(*this);
     V.sort();
-    V.init_colors();
+    V.initCol();
 
     for (int i=0; i < V.size() + 1; i++)
     {
-        S[i].set_i1(0);
-        S[i].set_i2(0);
+        S[i].setI(0);
+        S[i].setJ(0);
     }
-    expand_rec(V);
-    maxclique = new int[QMAX.size()];
-    for (int i=0; i<QMAX.size(); i++)
+    recursiveExpand(V);
+    Qmax = new int[_QMAX.size()];
+    for (int i=0; i<_QMAX.size(); i++)
     {
-        maxclique[i] = QMAX.at(i);
+        Qmax[i] = _QMAX.at(i);
     }
-    sz = QMAX.size();
+    sz = _QMAX.size();
 }
 
-void Maxclique::Vertices::init_colors()
+void Qmax::Vtxs::initCol()
 {
-    const int max_degree = v[0].get_degree();
-    for (int i = 0; i < max_degree; i++)
-        v[i].set_degree(i + 1);
-    for (int i = max_degree; i < sz; i++)
-        v[i].set_degree(max_degree + 1);
+    const int maxDeg = v[0].getDeg();
+    for (int i = 0; i < maxDeg; i++)
+        v[i].setDeg(i + 1);
+    for (int i = maxDeg; i < sz; i++)
+        v[i].setDeg(maxDeg + 1);
 }
 
-void Maxclique::Vertices::set_degrees(Maxclique &m)
+void Qmax::Vtxs::setDegs(Qmax &m)
 {
     for (int i=0; i < sz; i++)
     {
         int d = 0;
         for (int j=0; j < sz; j++)
-            if (m.isadjacent(v[i].get_i(), v[j].get_i())) d++;
-        v[i].set_degree(d);
+            if (m.isadjacent(v[i].getI(), v[j].getI())) d++;
+        v[i].setDeg(d);
     }
 }
 
-bool Maxclique::cut1(const int pi, const ColorClass &A)
+bool Qmax::cuttable(const int pi, const ColorClass &A)
 {
     for (int i = 0; i < A.size(); i++)
         if (isadjacent(pi, A.at(i)))
@@ -236,28 +236,28 @@ bool Maxclique::cut1(const int pi, const ColorClass &A)
     return false;
 }
 
-void Maxclique::cut2(const Vertices &A, Vertices &B)
+void Qmax::cut(const Vtxs &A, Vtxs &B)
 {
     for (int i = 0; i < A.size() - 1; i++)
     {
-        if (isadjacent(A.end().get_i(), A.at(i).get_i()))
-            B.push(A.at(i).get_i());
+        if (isadjacent(A.end().getI(), A.at(i).getI()))
+            B.push(A.at(i).getI());
     }
 }
 
-void Maxclique::color_sort(Vertices &R)
+void Qmax::coloration(Vtxs &R)
 {
     int j = 0;
     int maxno = 1;
-    int min_k = QMAX.size() - Q.size() + 1;
+    int kmin = _QMAX.size() - Q.size() + 1;
     C[1].rewind();
     C[2].rewind();
     int k = 1;
     for (int i=0; i < R.size(); i++)
     {
-        int pi = R.at(i).get_i();
+        int pi = R.at(i).getI();
         k = 1;
-        while (cut1(pi, C[k]))
+        while (cuttable(pi, C[k]))
             k++;
         if (k > maxno)
         {
@@ -265,40 +265,40 @@ void Maxclique::color_sort(Vertices &R)
             C[maxno + 1].rewind();
         }
         C[k].push(pi);
-        if (k < min_k)
+        if (k < kmin)
         {
-            R.at(j++).set_i(pi);
+            R.at(j++).setI(pi);
         }
     }
-    if (j > 0) R.at(j-1).set_degree(0);
-    if (min_k <= 0) min_k = 1;
-    for (k = min_k; k <= maxno; k++)
+    if (j > 0) R.at(j-1).setDeg(0);
+    if (kmin <= 0) kmin = 1;
+    for (k = kmin; k <= maxno; k++)
         for (int i = 0; i < C[k].size(); i++)
         {
-            R.at(j).set_i(C[k].at(i));
-            R.at(j++).set_degree(k);
+            R.at(j).setI(C[k].at(i));
+            R.at(j++).setDeg(k);
         }
 }
 
-void Maxclique::expand(Vertices R)
+void Qmax::expand(Vtxs R)
 {
     while (R.size())
     {
-        if (Q.size() + R.end().get_degree() > QMAX.size())
+        if (Q.size() + R.end().getDeg() > _QMAX.size())
         {
-            Q.push(R.end().get_i());
-            Vertices Rp(R.size());
-            cut2(R, Rp);
+            Q.push(R.end().getI());
+            Vtxs Rp(R.size());
+            cut(R, Rp);
             if (Rp.size())
             {
-                color_sort(Rp);
+                coloration(Rp);
                 pk++;
                 expand(Rp);
             }
-            else if (Q.size() > QMAX.size())
+            else if (Q.size() > _QMAX.size())
             {
                 std::cout << "etape n = " << pk << " taille de clique max = " << Q.size() << std::endl;
-                QMAX = Q;
+                _QMAX = Q;
             }
             Rp.dispose();
             Q.pop();
@@ -311,33 +311,33 @@ void Maxclique::expand(Vertices R)
     }
 }
 
-void Maxclique::expand_rec(Vertices R)
+void Qmax::recursiveExpand(Vtxs R)
 {
-    S[lv].set_i1(S[lv].get_i1() + S[lv - 1].get_i1() - S[lv].get_i2());
-    S[lv].set_i2(S[lv - 1].get_i1());
+    S[lv].setI(S[lv].getI() + S[lv - 1].getI() - S[lv].getJ());
+    S[lv].setJ(S[lv - 1].getI());
     while (R.size())
     {
-        if (Q.size() + R.end().get_degree() > QMAX.size())
+        if (Q.size() + R.end().getDeg() > _QMAX.size())
         {
-            Q.push(R.end().get_i());
-            Vertices Rp(R.size());
-            cut2(R, Rp);
+            Q.push(R.end().getI());
+            Vtxs Rp(R.size());
+            cut(R, Rp);
             if (Rp.size())
             {
-                if ((float)S[lv].get_i1()/++pk < Tlimit)
+                if ((float)S[lv].getI()/++pk < Tlimit)
                 {
-                    degree_sort(Rp);
+                    degSort(Rp);
                 }
-                color_sort(Rp);
-                S[lv].inc_i1();
+                coloration(Rp);
+                S[lv].incI();
                 lv++;
-                expand_rec(Rp);
+                recursiveExpand(Rp);
                 lv--;
             }
-            else if (Q.size() > QMAX.size())
+            else if (Q.size() > _QMAX.size())
             {
                 std::cout << "etape n = " << pk << " taille de clique max= " << Q.size() << std::endl;
-                QMAX = Q;
+                _QMAX = Q;
             }
             Rp.dispose();
             Q.pop();
