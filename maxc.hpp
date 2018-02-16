@@ -6,7 +6,7 @@
 class Qmax
 {
     const bool* const* edgls;
-    int pk, lv;
+    int ALLSTP, lv;
     const float Tlimit;
     class Vtxs
     {
@@ -168,7 +168,7 @@ public:
     Qmax(const bool* const*, const int, const float=0.025);
     int steps() const
     {
-        return pk;
+        return ALLSTP;
     }
     ~Qmax()
     {
@@ -178,7 +178,7 @@ public:
     };
 };
 
-Qmax::Qmax (const bool* const* graph, const int sz, const float tt) : pk(0), lv(1), Tlimit(tt), V(sz), Q(sz), _QMAX(sz)
+Qmax::Qmax (const bool* const* graph, const int sz, const float tt) : ALLSTP(0), lv(1), Tlimit(tt), V(sz), Q(sz), _QMAX(sz)
 {
     assert(graph!=0 && sz>0);
     for (int i=0; i < sz; i++) V.push(i);
@@ -292,12 +292,12 @@ void Qmax::expand(Vtxs R)
             if (Rp.size())
             {
                 coloration(Rp);
-                pk++;
+                ALLSTP++;
                 expand(Rp);
             }
             else if (Q.size() > _QMAX.size())
             {
-                std::cout << "etape n = " << pk << " taille de clique max = " << Q.size() << std::endl;
+                std::cout << "etape n = " << ALLSTP << " taille de clique max = " << Q.size() << std::endl;
                 _QMAX = Q;
             }
             Rp.dispose();
@@ -324,7 +324,7 @@ void Qmax::recursiveExpand(Vtxs R)
             cut(R, Rp);
             if (Rp.size())
             {
-                if ((float)S[lv].getI()/++pk < Tlimit)
+                if ((float)S[lv].getI()/++ALLSTP < Tlimit)
                 {
                     degSort(Rp);
                 }
@@ -336,7 +336,7 @@ void Qmax::recursiveExpand(Vtxs R)
             }
             else if (Q.size() > _QMAX.size())
             {
-                std::cout << "etape n = " << pk << " taille de clique max= " << Q.size() << std::endl;
+                std::cout << "etape n = " << ALLSTP << " taille de clique max= " << Q.size() << std::endl;
                 _QMAX = Q;
             }
             Rp.dispose();
