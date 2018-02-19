@@ -87,19 +87,19 @@ int main(int argc, char *argv[])
     }
     cout << "args = " << argv[1] << endl;
     bool **graph;
-    int size, *qmax, qsize;
+    int size, *qmax, cqsize;
     if(read_file(argv[1], graph, size)<0)
     {
         cout << " Usage : ./maxc <fichier.ls|.mat|.clq>" << endl;
         return -1;
     }
-    Maxclique mc(graph, size, 0.025);
-    mc.maxc(qmax, qsize);
+    Qmax mc(graph, size, 0.025);
+    mc.maxc(qmax, cqsize);
     cout << "Clique Max: ";
-    for (int i = 0; i < qsize; i++)
+    for (int i = 0; i < cqsize; i++)
         cout << qmax[i] << " ";
     cout << endl;
-    cout << "Taille = " << qsize << endl;
+    cout << "Taille = " << cqsize << endl;
     cout << "Nombre d'etapes = " << mc.steps() << endl;
     delete [] qmax;
     for (int i=0; i<size; i++)
