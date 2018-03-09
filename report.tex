@@ -282,15 +282,58 @@ Nous faisons tourner ce dernier \texttt{brock800\_2} avec Valgrind
 \paragraph{brock800\_2}
 Commande :
 \begin{verbatim}
-  valgrind ./maxc bingraph/brock800_2.clq
+  time ./maxc bingraph/brock800_2.clq
 \end{verbatim}
 Résultat
 \begin{verbatim}
-
+  args = bingraph/brock800_2.clq
+  |E| = 208166  |V| = 800 p = 0.650519
+  etape n = 13 taille de clique max= 14
+  etape n = 16 taille de clique max= 15
+  etape n = 161 taille de clique max= 16
+  etape n = 986 taille de clique max= 17
+  etape n = 2943 taille de clique max= 18
+  etape n = 49586 taille de clique max= 19
+  etape n = 4320201 taille de clique max= 20
+  etape n = 303732455 taille de clique max= 21
+  etape n = 586725133 taille de clique max= 24
+  Clique Max: 649 417 160 504 460 271 445 348 580 109 155 214 414 792 258 12 84 323 130 383 694 55 496 695
+  Taille = 24
+  Nombre d'etapes = 1315510644
 \end{verbatim}
 Temps d'exécution
 \begin{verbatim}
-
+  real  57m18.137s
+  user  57m17.928s
+  sys   0m0.008s
+\end{verbatim}
+\paragraph{brock800\_4}
+Commande :
+\begin{verbatim}
+  time ./maxc bingraph/brock800_4.clq
+\end{verbatim}
+Résultat
+\begin{verbatim}
+  args = bingraph/brock_800_4.clq
+  |E| = 207643  |V| = 800 p = 0.648884
+  etape n = 13 taille de clique max= 14
+  etape n = 66 taille de clique max= 15
+  etape n = 130 taille de clique max= 16
+  etape n = 674 taille de clique max= 17
+  etape n = 1263 taille de clique max= 18
+  etape n = 139158 taille de clique max= 19
+  etape n = 1189470 taille de clique max= 20
+  etape n = 64329588 taille de clique max= 21
+  etape n = 199277938 taille de clique max= 26
+  Clique Max: 333 246 269 623 665 713 156 388 494 508 395 323 111 686 16 393 134 342 680 560 153 7 510 361 160 293
+  Taille = 26
+  Nombre d'etapes = 501919040
+\end{verbatim}
+Temps d'exécution
+\begin{verbatim}
+  real  27m25.811s
+  user  27m25.664s
+  sys   0m0.004s
 \end{verbatim}
 \paragraph{keller4}
 Commande :
