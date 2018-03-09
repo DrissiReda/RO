@@ -1,7 +1,13 @@
-Graph MANN_a9
-Graph has n = 45 vertices.
-Find a Clique of size at least k = 17
-Finding Cliques...
-Could not find Clique of size at least 17.
-Maximum Clique size found 16.
-Results are stored in outclq/MANN_a9.out file
+args = bingraph/brock200_4.clq
+|E| = 13089  |V| = 200 p = 0.65445
+etape n = 0 taille de clique max= 1
+etape n = 9 taille de clique max= 10
+etape n = 16 taille de clique max= 12
+etape n = 111 taille de clique max= 13
+etape n = 581 taille de clique max= 14
+etape n = 2270 taille de clique max= 15
+etape n = 8012 taille de clique max= 16
+etape n = 37697 taille de clique max= 17
+Clique Max: 93 165 117 161 12 38 29 192 186 79 127 54 71 139 19 28 65 
+Taille = 17
+Nombre d'etapes = 47762
